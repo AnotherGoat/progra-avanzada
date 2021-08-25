@@ -8,6 +8,7 @@
 		function generaTablaColor(idDiv, listaCol) {
 			var tabla, fila, celd, i;
 			tabla = document.createElement("TABLE");
+			tabla.id = "tabla";
 			tabla.setAttribute("class", "mi_tverde");
 			for (i = 0; i < listaCol.length; i++) {
 				fila = document.createElement("TR");
@@ -23,10 +24,19 @@
 			document.getElementById(idDiv).innerHTML = "";
 			document.getElementById(idDiv).appendChild(tabla);
 		}
-		function agregaColor() {
+		function agregaColor(idTabla) {
 			var valor = document.getElementById("otromas").value;
+			var tabla = document.getElementById(idTabla);
+			var fila = document.createElement("TR");
+			var celd = document.createElement("TD");
 			col.push(valor);
-			generaTablaColor("aqui", col);
+			celd.innerHTML = valor;
+			fila.appendChild(celd);
+			celd = document.createElement("TD");
+			celd.innerHTML = "[   ]";
+			celd.style = "background-color:" + valor;
+			fila.appendChild(celd);
+			tabla.appendChild(fila);
 		}
 	</script>
 </head>
@@ -38,6 +48,6 @@
 	</script>
 	<br>
 	Otro Color: <input type="text" id="otromas">
-	<button onclick="agregaColor()">Agrega</button>
+	<button onclick="agregaColor('tabla')">Agrega</button>
 </body>
 </html>
