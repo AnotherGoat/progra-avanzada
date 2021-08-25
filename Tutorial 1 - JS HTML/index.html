@@ -4,8 +4,12 @@
 	<title>Tutorial HTML-JavaScript</title>
 	<link rel="stylesheet" type="text/css" href="./victor.css">
 	<script>
-		function quepasa() {
-			alert("¿Siguiente qué?");
+		function holachao() {
+			celda = document.getElementById("ele100");
+			if (celda.innerHTML == "Hola")
+				celda.innerHTML = "Chao";
+			else
+				celda.innerHTML = "Hola";
 		}
 	</script>
 </head>
@@ -13,13 +17,12 @@
 	<h4>Mi Tabla</h4>
 	<table border="2px" class="mi_tverde">
 		<tr>
-			<td>Hola</td>
+			<td id="ele100">Hola</td>
 			<td class="mi_tverde_claro">Mundo</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<button type="button" onclick="quepasa()">Siguiente
-				</button>
+				<button type="button" onclick="holachao()">Cambia</button>
 			</td>
 		</tr>
 	</table>
