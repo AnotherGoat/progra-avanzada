@@ -4,7 +4,6 @@
     <title>Taller 1 - Víctor Mardones</title>
     <script>
         var siguiente = "[X]"
-        var finalizado = false
 
         function llenar(id) {
             var boton = document.getElementById(id);
@@ -51,37 +50,17 @@
 
         function desactivarBotones() {
             var resultado = document.getElementById("ganador");
-            resultado.innerHTML += "<br>Ganó " + siguiente.replace("[","").replace("]","")
+            resultado.innerHTML = "Ganó " + siguiente.replace("[","").replace("]","")
 
             for (i = 0; i < 9; i++) {
                 document.getElementById("btn" + i).disabled = true
             }
-
-            finalizado = true
         }
 
         function pintaFondos(ids, color) {
             for (var id of ids) {
                 document.getElementById(id).style = "background-color: " + color;
             }
-        }
-
-        function reiniciar() {
-            siguiente = "[X]"
-
-            if (!finalizado) {
-                var resultado = document.getElementById("ganador");
-                resultado.innerHTML += "<br>Empate X-O";
-            }
-
-            for (var i = 0; i < 9; i++) {
-                var boton = document.getElementById("btn" + i)
-                boton.innerHTML = "[ ]"
-                boton.style = "None";
-                boton.disabled = false;
-            }
-
-            finalizado = false;
         }
     </script>
 </head>
@@ -104,6 +83,5 @@
         </tr>
     </table>
     <div id="ganador"><p></p></div>
-    <button onclick="reiniciar()">Reiniciar</button>
 </body>
 </html>
