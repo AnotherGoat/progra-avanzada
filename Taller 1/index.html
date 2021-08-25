@@ -3,27 +3,33 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Taller 1 - Víctor Mardones</title>
 	<script>
-		function saludar(numero) {
-			alert("Hola celda " + numero);
+		var siguiente = "[X]"
+		function llenar(id) {
+			var boton = document.getElementById(id);
+			boton.innerHTML = siguiente
+			if (siguiente == "[X]")
+				siguiente = "[O]";
+			else
+				siguiente = "[X]";
 		}
 	</script>
 </head>
 <body>
 	<table>
 		<tr>
-			<td><button onclick="saludar(1)">[ ]</button></td>
-			<td><button onclick="saludar(2)">[ ]</button></td>
-			<td><button onclick="saludar(3)">[ ]</button></td>
+			<td><button id="btn1" onclick="llenar('btn1')">[ ]</button></td>
+			<td><button id="btn2" onclick="llenar('btn2')">[ ]</button></td>
+			<td><button id="btn3" onclick="llenar('btn3')">[ ]</button></td>
 		</tr>
 		<tr>
-			<td><button onclick="saludar(4)">[ ]</button></td>
-			<td><button onclick="saludar(5)">[ ]</button></td>
-			<td><button onclick="saludar(6)">[ ]</button></td>
+			<td><button id="btn4" onclick="llenar('btn4')">[ ]</button></td>
+			<td><button id="btn5" onclick="llenar('btn5')">[ ]</button></td>
+			<td><button id="btn6" onclick="llenar('btn6')">[ ]</button></td>
 		</tr>
 		<tr>
-			<td><button onclick="saludar(7)">[ ]</button></td>
-			<td><button onclick="saludar(8)">[ ]</button></td>
-			<td><button onclick="saludar(9)">[ ]</button></td>
+			<td><button id="btn7" onclick="llenar('btn7')">[ ]</button></td>
+			<td><button id="btn8" onclick="llenar('btn8')">[ ]</button></td>
+			<td><button id="btn9" onclick="llenar('btn9')">[ ]</button></td>
 		</tr>
 	</table>
 </body>
