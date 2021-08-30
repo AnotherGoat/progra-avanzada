@@ -4,9 +4,9 @@
 	<title>Tutorial HTML-JavaScript</title>
 	<link rel="stylesheet" type="text/css" href="./victor.css">
 	<script>
-		var col = ["#339090", "#6090AA", "#80BB40"]
+		let col = ["#339090", "#6090AA", "#80BB40"]
 		function generaTablaColor(idDiv, listaCol) {
-			var tabla, fila, celd, i;
+			let tabla, fila, celd, i;
 			tabla = document.createElement("TABLE");
 			tabla.id = "tabla";
 			tabla.setAttribute("class", "mi_tverde");
@@ -25,10 +25,10 @@
 			document.getElementById(idDiv).appendChild(tabla);
 		}
 		function agregaColor(idTabla) {
-			var valor = document.getElementById("otromas").value;
-			var tabla = document.getElementById(idTabla);
-			var fila = document.createElement("TR");
-			var celd = document.createElement("TD");
+			let valor = document.getElementById("otromas").value;
+			let tabla = document.getElementById(idTabla);
+			let fila = document.createElement("TR");
+			let celd = document.createElement("TD");
 			col.push(valor);
 			celd.innerHTML = valor;
 			fila.appendChild(celd);
