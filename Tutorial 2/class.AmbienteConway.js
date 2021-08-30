@@ -51,6 +51,49 @@ class AmbienteConway {
             }
             tabla.appendChild(fila);
         }
+        document.getElementById(idDiv).appendChild(this.generarLink());
         document.getElementById(idDiv).appendChild(tabla);
+    }
+
+    generarLink() {
+        let link = document.createElement("LINK");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("type", "text/css");
+        link.setAttribute("href", "./conway.css")
+        return link;
+    }
+
+    proximoTurno() {
+        var celu = [];
+        for (var i = 0; i < this.alto; i++) {
+            celu[i] = [];
+            for (var j = 0; j < this.ancho; j++) {
+                var v = this.vecinasVivas(i, j);
+                if (this.estaMuerta(i, j) && v == 3)
+                    celu[i][j] = true;
+                else if (this.estaViva(i, j) && (v == 2 || v == 3))
+                    celu[i][j] = true;
+                else
+                    celu[i][j]  = false;
+            }
+        }
+        this.celula = celu;
+    }
+
+    estaMuerta() {
+        return !this.estaViva();
+    }
+
+    vecinasVivas(i, j) {
+        var total = 0;
+        if (this.estaViva(i-1, j-1)) total ++;
+        if (this.estaViva(i  , j-1)) total ++;
+        if (this.estaViva(i+1, j-1)) total ++;
+        if (this.estaViva(i-1, j  )) total ++;
+        if (this.estaViva(i+1, j  )) total ++;
+        if (this.estaViva(i-1, j+1)) total ++;
+        if (this.estaViva(i  , j+1)) total ++;
+        if (this.estaViva(i+1, j+1)) total ++;
+        return total;
     }
 }
