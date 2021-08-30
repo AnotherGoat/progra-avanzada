@@ -2,50 +2,18 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Tutorial 2 00JavaScript</title>
+    <script type="text/javascript" src="./class.AmbienteConway.js"></script>
 </head>
 <body>
     <link rel="stylesheet" type="text/css" href="./conway.css">
-    <table class="ambiente">
-        <tr>
-            <td class="celula viva"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula viva"></td>
-        </tr>
-        <tr>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-        </tr>
-        <tr>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-        </tr>
-        <tr>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-        </tr>
-        <tr>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-            <td class="celula muerta"></td>
-        </tr>
-    </table>
+    <div id="grilla"></div>
+    <script>
+        var x = new AmbienteConway(8, 8);
+        x.activa(0, 0);
+        x.activa(0, 7);
+        x.activa(7, 0);
+        x.activa(7, 7);
+        x.inyectaAmbiente("grilla");
+    </script>
 </body>
 </html>
