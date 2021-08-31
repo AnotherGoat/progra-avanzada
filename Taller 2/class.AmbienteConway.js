@@ -1,3 +1,4 @@
+var objActivoAmbienteConway;
 class AmbienteConway {
     constructor(alto, ancho) {
         this.alto = alto;
@@ -47,6 +48,9 @@ class AmbienteConway {
                 else {
                     celd.setAttribute("class", "celula muerta");
                 }
+                objActivoAmbienteConway = this;
+                var st = "objActivoAmbienteConway.cambiaEstado(" + i + "," + j + ")";
+                celd.setAttribute("onclick", st);
                 fila.appendChild(celd);
             }
             tabla.appendChild(fila);
@@ -61,6 +65,10 @@ class AmbienteConway {
         link.setAttribute("type", "text/css");
         link.setAttribute("href", "./conway.css")
         return link;
+    }
+
+    cambiaEstado(fila, columna) {
+        alert("clic en fila " + fila + " y columna " + columna);
     }
 
     proximoTurno() {
@@ -80,8 +88,8 @@ class AmbienteConway {
         this.celula = celu;
     }
 
-    estaMuerta() {
-        return !this.estaViva();
+    estaMuerta(i, j) {
+        return !this.estaViva(i, j);
     }
 
     vecinasVivas(i, j) {
