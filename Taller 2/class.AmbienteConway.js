@@ -1,10 +1,14 @@
 var objActivoAmbienteConway;
 class AmbienteConway {
     constructor(alto, ancho) {
+        objActivoAmbienteConway=this;
         this.alto = alto;
         this.ancho = ancho;
         this.celula = [];
         this.creaCelulas();
+
+        // Se mueve el <link> acá para eliminar el parpadeo
+        document.getElementById("link").appendChild(this.generarLink());
     }
 
     creaCelulas() {
@@ -59,7 +63,6 @@ class AmbienteConway {
             }
             tabla.appendChild(fila);
         }
-        document.getElementById(idDiv).appendChild(this.generarLink());
         document.getElementById(idDiv).appendChild(tabla);
     }
 
@@ -123,4 +126,62 @@ class AmbienteConway {
         if (this.estaViva(i+1, j+1)) total ++;
         return total;
     }
+
+    agregaPatron(fila, columna, nombrePatron) {
+        var y = fila;
+        var x = columna;
+
+        if (nombrePatron == "pentaDecatlon") {
+            console.log("llega");
+            for (var i = x; i < (x+8); i++) {
+                for (var j = y; j < (y+3); j++) {
+                    console.log("activando " + i + " , " + j);
+                    this.activa(i,j);
+                }
+            }
+            this.celula[x+1][y+1] = false;
+            this.celula[x+6][y+1] = false;
+        }
+
+        // https://www.conwaylife.com/wiki/Kok's_galaxy
+        if (nombrePatron == "galaxiaDeKok") {
+            for (var i = 0; i < galaxiaDeKok.length; i++) {
+                for (j of galaxiaDeKok[i]) {
+                    this.activa(x+i, y+j);
+                }
+            }
+        }
+
+        // https://www.conwaylife.com/wiki/Figure_eight
+        if (nombrePatron == "figuraOcho") {
+            for (var i = 0; i < figuraOcho.length; i++) {
+                for (j of figuraOcho[i]) {
+                    this.activa(x+i, y+j);
+                }
+            }
+        }
+    }
 }
+
+// https://www.conwaylife.com/wiki/Kok's_galaxy
+const galaxiaDeKok = [
+    [2, 5, 7],
+    [0, 1, 3, 5, 6, 7],
+    [1, 8],
+    [0, 1, 7],
+    [],
+    [1, 7, 8],
+    [0, 7],
+    [1, 2, 3, 5, 7, 8],
+    [1, 3, 6]
+]
+
+// https://www.conwaylife.com/wiki/Figure_eight
+const figuraOcho = [
+    [0, 1],
+    [0, 1, 3],
+    [4],
+    [1],
+    [2, 4, 5],
+    [4, 5]
+]
