@@ -5,10 +5,41 @@
     <title>Taller 2 JavaScript</title>
     <script type="text/javascript" src="./class.AmbienteConway.js"></script>
     <script>
+        var activado = false;
+
         function proximoPaso() {
             x.proximoTurno();
             document.getElementById("grilla").innerHTML="";
             x.inyectaAmbiente("grilla");
+        }
+        function automatico() {
+            activado = true;
+            desactivarBoton("next");
+
+            var botonAuto = document.getElementById("auto");
+            botonAuto.innerHTML = "Detener Avance";
+            botonAuto.setAttribute("onclick", "detener()");
+            proSigue(250);
+        }
+        function detener() {
+            activado = false;
+            activarBoton("next");
+
+            var botonAuto = document.getElementById("auto");
+            botonAuto.innerHTML = "Avance Automático";
+            botonAuto.setAttribute("onclick", "automatico()");
+        }
+        function proSigue(milisecs) {
+            if (activado) {
+                proximoPaso();
+                setTimeout(proSigue, milisecs, milisecs);
+            }
+        }
+        function desactivarBoton(id) {
+            document.getElementById(id).setAttribute("disabled", "true");
+        }
+        function activarBoton(id) {
+            document.getElementById(id).removeAttribute("disabled");
         }
     </script>
 </head>
@@ -17,11 +48,12 @@
     <div id="grilla"></div>
     <script>
         var x = new AmbienteConway(30, 30);
-        x.agregaPatron(5, 5, "pentaDecatlon");
-        x.agregaPatron(16, 13, "galaxiaDeKok");
-        x.agregaPatron(5, 21, "figuraOcho");
+        //x.agregaPatron(5, 5, "pentaDecatlon");
+        x.agregaPatron(16, 10, "galaxiaDeKok");
+        //x.agregaPatron(5, 21, "figuraOcho");
         x.inyectaAmbiente("grilla");
     </script>
-    <button onclick="proximoPaso()">Siguiente</button>
+    <button id="next" onclick="proximoPaso()">Siguiente</button>
+    <button id="auto" onclick="automatico()">Avance Automático</button>
 </body>
 </html>
