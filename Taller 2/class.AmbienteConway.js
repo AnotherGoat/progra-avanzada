@@ -42,6 +42,10 @@ class AmbienteConway {
             fila = document.createElement("TR");
             for (j = 0; j < this.ancho; j++) {
                 celd = document.createElement("TD");
+
+                // Almacena el ID de la celda nueva
+                celd.setAttribute("id", "celda_" + i + "_" + j)
+                
                 if (this.estaViva(i, j)) {
                     celd.setAttribute("class", "celula viva");
                 }
@@ -67,8 +71,23 @@ class AmbienteConway {
         return link;
     }
 
-    cambiaEstado(fila, columna) {
-        alert("clic en fila " + fila + " y columna " + columna);
+    // i = fila, j = columna
+    cambiaEstado(i, j) {
+        // Obtiene la celda según el id que se le asignó en inyectaAmbiente()
+        let celda = document.getElementById("celda_" + i + "_" + j);
+
+        // Si la célula está marcada, la desmarca
+        if (this.celula[i][j]) {
+            this.celula[i][j] = false;
+            // Cambia la clase para que se dibuje como célula muerta (gris)
+            celda.setAttribute("class", "celula muerta");
+        }
+        // En caso contrario, la marca
+        else {
+            this.celula[i][j] = true;
+            // Cambia la clase para que se dibuje como célula viva (verde)
+            celda.setAttribute("class", "celula viva");
+        }
     }
 
     proximoTurno() {
