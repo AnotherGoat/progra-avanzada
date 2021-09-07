@@ -1,30 +1,36 @@
 <html>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<head>
+    <title>Ejemplo SVG</title>
+    <script>
+        function agranda_circulo(id, delta) {
+            var cir = document.getElementById(id);;
+            var dim = parseInt(cir.getAttribute("r"));
+            cir.setAttribute("r", delta+dim);
+        }
+        function cambia_color(id) {
+            var c = ['orange', 'green', 'blue', 'purple'];
+            var cir = document.getElementById(id);
+            var col = cir.getAttribute("fill");
+            var idx = c.indexOf(col);
+            if (++idx > 3) idx = 0;
+            cir.setAttribute("fill", c[idx]);
+        }
+    </script>
+</head>
 <body>
-    <h1>Todo bien con SVG ?</h1>
+    <h4>Ejemplo gestión de eventos sobre SVG</h4>
 
-    <svg width="500" height="500">
-        <rect
-            width="300"
-            height="100"
-            rx="20"
-            ry="20"
-            style="fill:rgb(200,100,50);stroke-width:3;stroke:rgb(0,0,0);" />
-
-        <ellipse
-            cx="200"
-            cy="80"
-            rx="100"
-            ry="50"
-            style="fill:yellow;stroke:purple;stroke-width:2"/>
-        
-        <polyline
-            points="20,20 40,25 60,40 80,120 120,140 200,180"
-            style="fill:none;stroke:green;stroke-width:3" />
-        
-        <polygon
-            points="30,30 50,25 70,50 90,130 130,150 210,190"
-            style="fill:lime;stroke:purple;stroke-width:3;" />
+    <svg width="200" height="160">
+        <circle id="c01" cx="50" cy="50" r="15" fill="red"
+            onclick="agranda_circulo('c01', -4)"
+            onmouseover="cambia_color('c01')"/>
+        <circle id="c02" cx="150" cy="100" r="20" fill="blue"
+            onclick="agranda_circulo('c02',-4)"
+            onmouseover="cambia_color('c02')"/>
     </svg>
-
+    <br>
+    <button onclick="agranda_circulo('c01',4)">Más rojo</button>
+    <button onclick="agranda_circulo('c02',7)">Más azul</button>
 </body>
 </html>
