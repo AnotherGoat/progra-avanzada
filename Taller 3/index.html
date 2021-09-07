@@ -89,7 +89,7 @@
                 // También añade los extremos
                 for (let i = 0; i < cantidad; i++) {
                     // Convierte de polar a cartesiana a SVG
-                    let polar = {r: this.cartesian.maximo,
+                    let polar = {r: this.cartesian.maximo * 0.9,
                                  theta: divisiones[i]};
                     let cartesian = this.a_cartesiana(polar);
                     let svg = this.a_svg(cartesian);
@@ -124,6 +124,30 @@
             coseno(grados) {
                 return Math.cos(grados * Math.PI / 180)
             }
+
+            inyectaEtiquetas() {
+                let posicion = 20;
+
+                // Añade las etiquetas
+                for (let i = 0; i < this.svg.extremos.length; i++) {
+                    let circulo = this.crearCirculo(6, this.ancho + 20, posicion, this.cartesian.colores[i]);
+                    this.svg.appendChild(circulo);
+
+                    let etiqueta = this.crearTexto(this.ancho + 35, posicion + 5, this.cartesian.etiquetas[i]);
+                    this.svg.appendChild(etiqueta);
+
+                    posicion += 30;
+                }
+            }
+
+            crearTexto(x, y, contenido) {
+                let texto = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                texto.innerHTML = contenido;
+                texto.setAttribute("x", x);
+                texto.setAttribute("y", y);
+                texto.setAttribute("fill", "black");
+                return texto;
+            }
         }
 
         function datosParaArana(tx) {
@@ -156,6 +180,7 @@
             var graf = new AranaSVG(obj);
             console.log(JSON.stringify(graf.cartesian));
             graf.muestra();
+            graf.inyectaEtiquetas();
             console.log(JSON.stringify(graf.svg));
 
             // Inyecta el gráfico desde fuera de la clase
