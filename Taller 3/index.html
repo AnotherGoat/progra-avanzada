@@ -1,23 +1,80 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
 <head>
-    <title>Ejemplo SVG</title>
+    <title>Ejemplo Inyección SVG usando DOM</title>
     <script>
         class AranaSVG {
-            constructor(dato) {
+            constructor(cartesian) {
+                this.ancho = 400;
 
+                this.cartesian = cartesian;
+                this.cartesian.centro = {x:0, y:0};
+                this.cartesian.puntos = [{x:-70, y:-70}, {x:10, y:-70}, {x:70, y:-70}];
+
+                this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                this.svg.setAttribute("height", this.ancho)
+                this.svg.setAttribute("width", this.ancho * 1.5);
+                this.svg.centro = this.a_svg(this.cartesian.centro);
+                this.svg.puntos = [this.a_svg(this.cartesian.puntos[0]),
+                                   this.a_svg(this.cartesian.puntos[1]),
+                                   this.a_svg(this.cartesian.puntos[2])];
+            }
+
+            a_svg(real) {
+                return {x: this.ancho/2 + real.x * this.ancho/2 * 0.9 / this.cartesian.maximo,
+                        y: this.ancho/2 - real.y * this.ancho/2 * 0.9 / this.cartesian.maximo};
+            }
+
+            muestra() {
+                let area1 = this.crearMarco(this.ancho, this.ancho, 0, 0)
+                this.svg.appendChild(area1);
+
+                let area2 = this.crearMarco(this.ancho * 0.5, this.ancho, this.ancho, 0)
+                this.svg.appendChild(area2);
+
+                let centro = this.crearCirculo(3, this.ancho/2, this.ancho/2, "gray");
+                this.svg.appendChild(centro);
+
+                for (let i = 0; i < this.svg.puntos.length; i++) {
+                    let punto = this.crearCirculo(4, this.svg.puntos[i].x, this.svg.puntos[i].y, this.cartesian.colores[i])
+                    this.svg.appendChild(punto);
+                }
+            }
+
+            crearMarco(ancho, alto, x, y) {
+                let marco = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                marco.setAttribute("width", ancho);
+                marco.setAttribute("height", alto);
+                marco.setAttribute("x", x);
+                marco.setAttribute("y", y);
+                marco.setAttribute("style", "fill:white;stroke:black;stroke-width:2");
+                return marco;
+            }
+
+            crearCirculo(radio, cx, cy, color) {
+                let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circulo.setAttribute("r", radio);
+                circulo.setAttribute("cx", cx);
+                circulo.setAttribute("cy", cy);
+                circulo.setAttribute("fill", color);
+                return circulo;
             }
         }
 
         function datosParaArana(tx) {
             var obj = document.getElementById(tx);
-            str = obj.innerHTML.replace(/(\r\n|\n|\r|\s)/gm, "");
+            // Se reemplaza innerHTML por value para que el valor se actualice
+            str = obj.value.replace(/(\r\n|\n|\r|\s)/gm, "");
+            
             var texto = str.split(";");
             texto.splice(-1, 1); // borra último elemento vacío
+            
             var obj = {tipo:"araña"};
             var linea = 0;
+
             for (lin of texto) {
                 console.log("linea " + linea + ": " + lin);
+
                 var sep = lin.split("=");
                 if (sep.length == 2) {
                     var ele = sep[1].split(",");
@@ -28,7 +85,22 @@
                 }
                 linea++;
             }
+
             console.log(JSON.stringify(obj));
+
+            var graf = new AranaSVG(obj);
+            console.log(JSON.stringify(graf.cartesian));
+            graf.muestra();
+            console.log(JSON.stringify(graf.svg));
+
+            // Inyecta el gráfico desde fuera de la clase
+            inyectarSVG("grafico", graf.svg)
+        }
+
+        function inyectarSVG(div, svg) {
+            let grafico = document.getElementById(div);
+            grafico.innerHTML="";
+            grafico.appendChild(svg);
         }
     </script>
 </head>
@@ -41,13 +113,13 @@
 maximo=100;
 datos=90,30,70;
 colores=#909033,green,orange;
-etiquetas=TP-1,TP-2,TP-3;
-                </textarea>
+etiquetas=TP-1,TP-2,TP-3;</textarea>
                 <br>
                 <button onclick="datosParaArana('tx_')">Crea Gráfico</button>
             </td>
             <td>
-                <div id="grafico"></div>
+                <!-- Se inicia con un SVG vacío para que no se mueva el área de texto después de pulsarlo -->
+                <div id="grafico"><svg width="600" height="400"></svg></div>
             </td>
         </tr>
     </table>
