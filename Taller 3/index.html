@@ -9,35 +9,46 @@
 
                 this.cartesian = cartesian;
                 this.cartesian.centro = {x:0, y:0};
-                this.cartesian.puntos = [{x:-70, y:-70}, {x:10, y:-70}, {x:70, y:-70}];
 
                 this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 this.svg.setAttribute("height", this.ancho)
                 this.svg.setAttribute("width", this.ancho * 1.5);
                 this.svg.centro = this.a_svg(this.cartesian.centro);
-                this.svg.puntos = [this.a_svg(this.cartesian.puntos[0]),
-                                   this.a_svg(this.cartesian.puntos[1]),
-                                   this.a_svg(this.cartesian.puntos[2])];
+
+                // Inicializan vacíos
+                this.svg.puntos = [];
+                this.svg.extremos = [];
+
+                this.calculaPosicionCirculos();
             }
 
-            a_svg(real) {
-                return {x: this.ancho/2 + real.x * this.ancho/2 * 0.9 / this.cartesian.maximo,
-                        y: this.ancho/2 - real.y * this.ancho/2 * 0.9 / this.cartesian.maximo};
+            a_svg(cartesiana) {
+                return {x: this.ancho/2 + cartesiana.x * this.ancho/2 * 0.9 / this.cartesian.maximo,
+                        y: this.ancho/2 - cartesiana.y * this.ancho/2 * 0.9 / this.cartesian.maximo};
             }
 
             muestra() {
+                // Áreas que dividen el SVG
                 let area1 = this.crearMarco(this.ancho, this.ancho, 0, 0)
                 this.svg.appendChild(area1);
 
                 let area2 = this.crearMarco(this.ancho * 0.5, this.ancho, this.ancho, 0)
                 this.svg.appendChild(area2);
 
+                // Centro del gráfico
                 let centro = this.crearCirculo(3, this.ancho/2, this.ancho/2, "gray");
                 this.svg.appendChild(centro);
 
+                // Puntos
                 for (let i = 0; i < this.svg.puntos.length; i++) {
-                    let punto = this.crearCirculo(4, this.svg.puntos[i].x, this.svg.puntos[i].y, this.cartesian.colores[i])
+                    let punto = this.crearCirculo(3, this.svg.puntos[i].x, this.svg.puntos[i].y, "black")
                     this.svg.appendChild(punto);
+                }
+
+                // Extremos
+                for (let i = 0; i < this.svg.extremos.length; i++) {
+                    let extremo = this.crearCirculo(6, this.svg.extremos[i].x, this.svg.extremos[i].y, this.cartesian.colores[i])
+                    this.svg.appendChild(extremo);
                 }
             }
 
@@ -47,7 +58,7 @@
                 marco.setAttribute("height", alto);
                 marco.setAttribute("x", x);
                 marco.setAttribute("y", y);
-                marco.setAttribute("style", "fill:white;stroke:black;stroke-width:2");
+                marco.setAttribute("style", "fill:white;stroke:black");
                 return marco;
             }
 
@@ -58,6 +69,60 @@
                 circulo.setAttribute("cy", cy);
                 circulo.setAttribute("fill", color);
                 return circulo;
+            }
+
+            calculaPosicionCirculos() {
+                let cantidad = this.cartesian.datos.length;
+                let divisiones = this.dividirCirculo(cantidad);
+
+                for (let i = 0; i < cantidad; i++) {
+                    // Convierte de polar a cartesiana a SVG
+                    let polar = {r: this.cartesian.datos[i],
+                                 theta: divisiones[i]};
+                    let cartesian = this.a_cartesiana(polar);
+                    let svg = this.a_svg(cartesian);
+
+                    // Añade el punto al SVG
+                    this.svg.puntos.push(svg);
+                }
+
+                // También añade los extremos
+                for (let i = 0; i < cantidad; i++) {
+                    // Convierte de polar a cartesiana a SVG
+                    let polar = {r: this.cartesian.maximo,
+                                 theta: divisiones[i]};
+                    let cartesian = this.a_cartesiana(polar);
+                    let svg = this.a_svg(cartesian);
+
+                    // Añade el extremo al SVG
+                    this.svg.extremos.push(svg);
+                }
+            }
+
+            dividirCirculo(partes) {
+                let grados = [];
+
+                for (let i = 0; i < partes; i++) {
+                    // Si i = 0 añade 45, empieza desde 45
+                    grados.push(45 + (i / partes) * 360);
+                }
+
+                // Retorna todos los grados donde se divide
+                return grados;
+            }
+
+            a_cartesiana(polar) {
+                // r = radio, theta = angulo en grados
+                return {x: polar.r * this.coseno(polar.theta),
+                        y: polar.r * this.seno(polar.theta)};
+            }
+
+            seno(grados) {
+                return Math.sin(grados * Math.PI / 180)
+            }
+
+            coseno(grados) {
+                return Math.cos(grados * Math.PI / 180)
             }
         }
 
