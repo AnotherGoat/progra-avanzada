@@ -3,34 +3,44 @@
 <head>
     <title>Ejemplo SVG</title>
     <script>
-        function agranda_circulo(id, delta) {
-            var cir = document.getElementById(id);;
-            var dim = parseInt(cir.getAttribute("r"));
-            cir.setAttribute("r", delta+dim);
+        function inyectaPaleta(idDiv) {
+            var base = document.createElement("div");
+            var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+            var w = 400;
+            svg.setAttribute("width", w);
+            svg.setAttribute("height", w);
+            var x = 20, size = 200;
+            var cc = 10;
+            var col, c;
+            for (var i = 0; i < 10; i++, x += 10, size -= 10, cc += 5) {
+                c = creaCuadrado(x, x, size, size, cc + 100, cc + 100, cc);
+                svg.appendChild(c);
+                c = creaCuadrado(x + w / 2, x, size, size, cc + 100, cc, cc);
+                svg.appendChild(c);
+                c = creaCuadrado(x, x + w / 2, size, size, cc, cc + 100, cc);
+                svg.appendChild(c);
+                c = creaCuadrado(x + w / 2, x + w / 2, size, size, cc, cc, cc + 100);
+                svg.appendChild(c);
+            }
+            base.appendChild(svg);
+            document.getElementById(idDiv).innerHTML = base.innerHTML;
         }
-        function cambia_color(id) {
-            var c = ['orange', 'green', 'blue', 'purple'];
-            var cir = document.getElementById(id);
-            var col = cir.getAttribute("fill");
-            var idx = c.indexOf(col);
-            if (++idx > 3) idx = 0;
-            cir.setAttribute("fill", c[idx]);
+        function creaCuadrado(x, y, ancho, alto, colr, colg, colb) {
+            var c = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+            c.setAttribute("x", x);
+            c.setAttribute("y", y);
+            c.setAttribute("width", ancho);
+            c.setAttribute("height", alto);
+            c.setAttribute("fill", "rgb(" + colr + "," + colg + "," + colb + ")");
+            return c;
         }
     </script>
 </head>
 <body>
-    <h4>Ejemplo gestión de eventos sobre SVG</h4>
-
-    <svg width="200" height="160">
-        <circle id="c01" cx="50" cy="50" r="15" fill="red"
-            onclick="agranda_circulo('c01', -4)"
-            onmouseover="cambia_color('c01')"/>
-        <circle id="c02" cx="150" cy="100" r="20" fill="blue"
-            onclick="agranda_circulo('c02',-4)"
-            onmouseover="cambia_color('c02')"/>
-    </svg>
-    <br>
-    <button onclick="agranda_circulo('c01',4)">Más rojo</button>
-    <button onclick="agranda_circulo('c02',7)">Más azul</button>
+    <h4>Ejemplo Inyección SVG usando DOM</h4>
+    <div id="destino"></div>
+    <script>
+        inyectaPaleta("destino");
+    </script>
 </body>
 </html>
