@@ -1,4 +1,4 @@
-var objActivoAmbienteConway;
+let objActivoAmbienteConway;
 class AmbienteConway {
     constructor(alto, ancho) {
         objActivoAmbienteConway=this;
@@ -12,7 +12,7 @@ class AmbienteConway {
     }
 
     creaCelulas() {
-        var i, j;
+        let i, j;
         for (i = 0; i < this.alto; i++) {
             this.celula[i] = [];
             for (j = 0; j < this.ancho; j++) {
@@ -39,7 +39,7 @@ class AmbienteConway {
     }
 
     inyectaAmbiente(idDiv) {
-        var tabla, fila, celd, i, j;
+        let tabla, fila, celd, i, j;
         tabla = document.createElement("TABLE");
         tabla.setAttribute("class", "ambiente");
         for (i = 0; i < this.alto; i++) {
@@ -57,7 +57,7 @@ class AmbienteConway {
                     celd.setAttribute("class", "celula muerta");
                 }
                 objActivoAmbienteConway = this;
-                var st = "objActivoAmbienteConway.cambiaEstado(" + i + "," + j + ")";
+                let st = "objActivoAmbienteConway.cambiaEstado(" + i + "," + j + ")";
                 celd.setAttribute("onclick", st);
                 fila.appendChild(celd);
             }
@@ -94,11 +94,11 @@ class AmbienteConway {
     }
 
     proximoTurno() {
-        var celu = [];
-        for (var i = 0; i < this.alto; i++) {
+        let celu = [];
+        for (let i = 0; i < this.alto; i++) {
             celu[i] = [];
-            for (var j = 0; j < this.ancho; j++) {
-                var v = this.vecinasVivas(i, j);
+            for (let j = 0; j < this.ancho; j++) {
+                let v = this.vecinasVivas(i, j);
                 if (this.estaMuerta(i, j) && v == 3)
                     celu[i][j] = true;
                 else if (this.estaViva(i, j) && (v == 2 || v == 3))
@@ -115,7 +115,7 @@ class AmbienteConway {
     }
 
     vecinasVivas(i, j) {
-        var total = 0;
+        let total = 0;
         if (this.estaViva(i-1, j-1)) total ++;
         if (this.estaViva(i  , j-1)) total ++;
         if (this.estaViva(i+1, j-1)) total ++;
@@ -128,13 +128,13 @@ class AmbienteConway {
     }
 
     agregaPatron(fila, columna, nombrePatron) {
-        var y = fila;
-        var x = columna;
+        let y = fila;
+        let x = columna;
 
         if (nombrePatron == "pentaDecatlon") {
             console.log("llega");
-            for (var i = x; i < (x+8); i++) {
-                for (var j = y; j < (y+3); j++) {
+            for (let i = x; i < (x+8); i++) {
+                for (let j = y; j < (y+3); j++) {
                     console.log("activando " + i + " , " + j);
                     this.activa(i,j);
                 }
@@ -145,7 +145,7 @@ class AmbienteConway {
 
         // https://www.conwaylife.com/wiki/Kok's_galaxy
         if (nombrePatron == "galaxiaDeKok") {
-            for (var i = 0; i < galaxiaDeKok.length; i++) {
+            for (let i = 0; i < galaxiaDeKok.length; i++) {
                 for (j of galaxiaDeKok[i]) {
                     this.activa(x+i, y+j);
                 }
@@ -154,7 +154,7 @@ class AmbienteConway {
 
         // https://www.conwaylife.com/wiki/Figure_eight
         if (nombrePatron == "figuraOcho") {
-            for (var i = 0; i < figuraOcho.length; i++) {
+            for (let i = 0; i < figuraOcho.length; i++) {
                 for (j of figuraOcho[i]) {
                     this.activa(x+i, y+j);
                 }
@@ -162,7 +162,7 @@ class AmbienteConway {
         }
 
         if (nombrePatron == "boom") {
-            for (var i = 0; i < boom.length; i++) {
+            for (let i = 0; i < boom.length; i++) {
                 for (j of boom[i]) {
                     this.activa(x+i, y+j);
                 }

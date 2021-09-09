@@ -5,7 +5,7 @@
     <title>Taller 2 JavaScript</title>
     <script type="text/javascript" src="./class.AmbienteConway.js"></script>
     <script>
-        var activado = false;
+        let activado = false;
 
         function proximoPaso() {
             x.proximoTurno();
@@ -16,7 +16,7 @@
             activado = true;
             desactivarBoton("next");
 
-            var botonAuto = document.getElementById("auto");
+            let botonAuto = document.getElementById("auto");
             botonAuto.innerHTML = "Detener Avance";
             botonAuto.setAttribute("onclick", "detener()");
             proSigue(250);
@@ -25,7 +25,7 @@
             activado = false;
             activarBoton("next");
 
-            var botonAuto = document.getElementById("auto");
+            let botonAuto = document.getElementById("auto");
             botonAuto.innerHTML = "Avance Automático";
             botonAuto.setAttribute("onclick", "automatico()");
         }
@@ -47,7 +47,7 @@
     <div id="link"></div>
     <div id="grilla"></div>
     <script>
-        var x = new AmbienteConway(30, 30);
+        let x = new AmbienteConway(30, 30);
         x.agregaPatron(5, 5, "pentaDecatlon");
         x.agregaPatron(16, 10, "galaxiaDeKok");
         //x.agregaPatron(11, 12, "boom")

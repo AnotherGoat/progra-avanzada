@@ -7,7 +7,7 @@ class AmbienteConway {
     }
 
     creaCelulas() {
-        var i, j;
+        let i, j;
         for (i = 0; i < this.alto; i++) {
             this.celula[i] = [];
             for (j = 0; j < this.ancho; j++) {
@@ -34,7 +34,7 @@ class AmbienteConway {
     }
 
     inyectaAmbiente(idDiv) {
-        var tabla, fila, celd, i, j;
+        let tabla, fila, celd, i, j;
         tabla = document.createElement("TABLE");
         tabla.setAttribute("class", "ambiente");
         for (i = 0; i < this.alto; i++) {
@@ -64,11 +64,11 @@ class AmbienteConway {
     }
 
     proximoTurno() {
-        var celu = [];
-        for (var i = 0; i < this.alto; i++) {
+        let celu = [];
+        for (let i = 0; i < this.alto; i++) {
             celu[i] = [];
-            for (var j = 0; j < this.ancho; j++) {
-                var v = this.vecinasVivas(i, j);
+            for (let j = 0; j < this.ancho; j++) {
+                let v = this.vecinasVivas(i, j);
                 if (this.estaMuerta(i, j) && v == 3)
                     celu[i][j] = true;
                 else if (this.estaViva(i, j) && (v == 2 || v == 3))
@@ -85,7 +85,7 @@ class AmbienteConway {
     }
 
     vecinasVivas(i, j) {
-        var total = 0;
+        let total = 0;
         if (this.estaViva(i-1, j-1)) total ++;
         if (this.estaViva(i  , j-1)) total ++;
         if (this.estaViva(i+1, j-1)) total ++;

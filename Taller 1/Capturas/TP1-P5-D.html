@@ -3,11 +3,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Taller 1 - Víctor Mardones</title>
     <script>
-        var siguiente = "[X]"
-        var finalizado = false
+        let siguiente = "[X]"
+        let finalizado = false
 
         function llenar(id) {
-            var boton = document.getElementById(id);
+            let boton = document.getElementById(id);
 
             if (!boton.disabled) {
                 boton.innerHTML = siguiente
@@ -28,21 +28,21 @@
             3 4 5
             6 7 8
         */
-        var victorias = [[0,1,2], [3,4,5], [6,7,8], // filas
+        let victorias = [[0,1,2], [3,4,5], [6,7,8], // filas
                          [0,3,6], [1,4,7], [2,5,8], // columnas
                          [0,4,8], [2,4,6]]          // diagonales
 
         function revisarGanador() {
-            var botones = [];
+            let botones = [];
             for (i = 0; i < 9; i++) {
                 botones.push(document.getElementById("btn" + i).innerHTML);
             }
 
-            for (var v of victorias) {
+            for (let v of victorias) {
                 if (botones[v[0]] === siguiente &&
                     botones[v[1]] === siguiente &&
                     botones[v[2]] === siguiente) {
-                    var ganadores = ["btn" + v[0], "btn" + v[1], "btn" + v[2]]
+                    let ganadores = ["btn" + v[0], "btn" + v[1], "btn" + v[2]]
                     pintaFondos(ganadores, "green")
                     desactivarBotones();
                 }
@@ -50,7 +50,7 @@
         }
 
         function desactivarBotones() {
-            var resultado = document.getElementById("ganador");
+            let resultado = document.getElementById("ganador");
             resultado.innerHTML += "<br>Ganó " + siguiente.replace("[","").replace("]","")
 
             for (i = 0; i < 9; i++) {
@@ -61,7 +61,7 @@
         }
 
         function pintaFondos(ids, color) {
-            for (var id of ids) {
+            for (let id of ids) {
                 document.getElementById(id).style = "background-color: " + color;
             }
         }
@@ -70,12 +70,12 @@
             siguiente = "[X]"
 
             if (!finalizado) {
-                var resultado = document.getElementById("ganador");
+                let resultado = document.getElementById("ganador");
                 resultado.innerHTML += "<br>Empate X-O";
             }
 
-            for (var i = 0; i < 9; i++) {
-                var boton = document.getElementById("btn" + i)
+            for (let i = 0; i < 9; i++) {
+                let boton = document.getElementById("btn" + i)
                 boton.innerHTML = "[ ]"
                 boton.style = "None";
                 boton.disabled = false;

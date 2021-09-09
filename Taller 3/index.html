@@ -185,22 +185,22 @@
         }
 
         function datosParaArana(tx) {
-            var obj = document.getElementById(tx);
+            let obj = document.getElementById(tx);
             // Se reemplaza innerHTML por value para que el valor se actualice
             str = obj.value.replace(/(\r\n|\n|\r|\s)/gm, "");
             
-            var texto = str.split(";");
+            let texto = str.split(";");
             texto.splice(-1, 1); // borra último elemento vacío
             
-            var obj = {tipo:"araña"};
-            var linea = 0;
+            let obj = {tipo:"araña"};
+            let linea = 0;
 
             for (lin of texto) {
                 console.log("linea " + linea + ": " + lin);
 
-                var sep = lin.split("=");
+                let sep = lin.split("=");
                 if (sep.length == 2) {
-                    var ele = sep[1].split(",");
+                    let ele = sep[1].split(",");
                     obj[sep[0]] = ele;
                 }
                 else {
@@ -211,7 +211,7 @@
 
             console.log(JSON.stringify(obj));
 
-            var graf = new AranaSVG(obj);
+            let graf = new AranaSVG(obj);
             console.log(JSON.stringify(graf.cartesian));
             graf.muestra();
             graf.inyectaEtiquetas();

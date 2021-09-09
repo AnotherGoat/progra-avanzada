@@ -4,15 +4,15 @@
     <title>Ejemplo SVG</title>
     <script>
         function inyectaPaleta(idDiv) {
-            var base = document.createElement("div");
-            var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-            var w = 400;
+            let base = document.createElement("div");
+            let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+            let w = 400;
             svg.setAttribute("width", w);
             svg.setAttribute("height", w);
-            var x = 20, size = 200;
-            var cc = 10;
-            var col, c;
-            for (var i = 0; i < 10; i++, x += 10, size -= 10, cc += 5) {
+            let x = 20, size = 200;
+            let cc = 10;
+            let col, c;
+            for (let i = 0; i < 10; i++, x += 10, size -= 10, cc += 5) {
                 c = creaCuadrado(x, x, size, size, cc + 100, cc + 100, cc);
                 svg.appendChild(c);
                 c = creaCuadrado(x + w / 2, x, size, size, cc + 100, cc, cc);
@@ -26,7 +26,7 @@
             document.getElementById(idDiv).innerHTML = base.innerHTML;
         }
         function creaCuadrado(x, y, ancho, alto, colr, colg, colb) {
-            var c = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+            let c = document.createElementNS("http://www.w3.org/2000/svg", "rect")
             c.setAttribute("x", x);
             c.setAttribute("y", y);
             c.setAttribute("width", ancho);
