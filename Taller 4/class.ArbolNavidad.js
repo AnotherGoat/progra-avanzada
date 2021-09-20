@@ -165,5 +165,4 @@ class ArbolNavidad {
         
         document.getElementById(idSelector).setAttribute("fill", this.colorActual);
     }
-
 }
