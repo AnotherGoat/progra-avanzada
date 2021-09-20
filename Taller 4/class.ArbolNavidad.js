@@ -92,13 +92,14 @@ class ArbolNavidad {
 
         let id = "luz" + this.luces.length;
         luz.setAttribute("id", id);
+        luz.setAttribute("onclick", "activeObjectArbolNavidad.clicEnLuzActiva('" + id + "')");
 
         this.circuitos[circuito - 1].ids.push(id);
 
         // Si la animación está en ejecución, las luces agregadas vendrán con la animación
         if (this.activo) {
             let milisecs = this.circuitos[circuito - 1].ms;
-            luz.appendChild(this.crearAnimacion(milisecs));
+            luz.appendChild(this.crearParpadeo(id, milisecs));
         }
 
         this.svg.appendChild(luz);
@@ -120,14 +121,15 @@ class ArbolNavidad {
         }
     }
 
-    crearAnimacion(milisecs) {
+    crearParpadeo(idLuz, milisecs) {
         let animacion = document.createElementNS(ns, "animate");
 
         animacion.setAttribute("attributeType", "XML");
         animacion.setAttribute("attributeName", "visibility");
         animacion.setAttribute("values", "hidden;visible");
-        animacion.setAttribute("dur", "" + milisecs + "ms")
+        animacion.setAttribute("dur", "" + milisecs + "ms");
         animacion.setAttribute("repeatCount", "indefinite");
+        animacion.setAttribute("id", idLuz + "parpadeo")
 
         return animacion;
     }
@@ -140,7 +142,7 @@ class ArbolNavidad {
                 let luz = document.getElementById(idLuz);
                 let milisecs = this.circuitos[i - 1].ms;
 
-                luz.appendChild(this.crearAnimacion(milisecs));
+                luz.appendChild(this.crearParpadeo(idLuz, milisecs));
             }
         }
     }
@@ -164,5 +166,47 @@ class ArbolNavidad {
             this.colorActual = "yellow"
         
         document.getElementById(idSelector).setAttribute("fill", this.colorActual);
+    }
+
+    clicEnLuzActiva(idLuz) {
+        // Sólo se permite la interacción si está activa la animación del árbol
+        if (this.activo) {
+            let luz = document.getElementById(idLuz);
+
+            let agrandar = this.crearCambioTamanio("10", "50", "click", "2000ms");
+            agrandar.setAttribute("id", idLuz + "agrandar");
+
+            // Impide que se reinicie mientras está activa
+            agrandar.setAttribute("restart", "whenNotActive");
+
+            let achicar = this.crearCambioTamanio("50", "10", idLuz + "agrandar.begin + 2000ms", "2000ms");
+            achicar.setAttribute("id", idLuz + "achicar");
+
+            // Impide que se reinicie mientras está activa
+            achicar.setAttribute("restart", "whenNotActive");
+
+            // También se modifica parpadeo para que ocurra después de que las 2 animaciones anteriores terminen
+            let parpadeo = document.getElementById(idLuz + "parpadeo");
+            parpadeo.setAttribute("begin", idLuz + "achicar.begin + 2000ms");
+
+            luz.innerHTML = "";
+            luz.appendChild(agrandar);
+            luz.appendChild(achicar);
+            luz.appendChild(parpadeo);
+        }
+    }
+
+    crearCambioTamanio(from, to, begin, milisecs) {
+        let animacion = document.createElementNS(ns, "animate");
+
+        animacion.setAttribute("attributeType", "XML");
+        animacion.setAttribute("attributeName", "r");
+        animacion.setAttribute("from", from);
+        animacion.setAttribute("to", to);
+        animacion.setAttribute("begin", begin);
+        animacion.setAttribute("dur", milisecs);
+        animacion.setAttribute("fill", "freeze");
+
+        return animacion;
     }
 }
