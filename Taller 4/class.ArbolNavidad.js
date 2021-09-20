@@ -6,17 +6,21 @@ class ArbolNavidad {
     constructor() {
         activeObjectArbolNavidad = this;
         this.svg = document.createElementNS(ns, "svg");
-        this.luzamarilla = [];
 
-        // Grupos de luces
-        this.grupos = [
-            {ms: 400, luces: []},
-            {ms: 600, luces: []},
-            {ms: 1000, luces: []}
+        this.luces = [];
+
+        // Circuitos de luces
+        this.circuitos = [
+            {ms: 400, ids: []}, // 1
+            {ms: 600, ids: []}, // 2
+            {ms: 1000, ids: []} // 3
         ];
 
         // Indica si la animación está activa o no, inicia desactivado
         this.activo = false;
+
+        // Color del rectángulo derecho
+        this.colorActual = "yellow";
     }
 
     muestra(idDiv) {
@@ -36,7 +40,9 @@ class ArbolNavidad {
         rect1.setAttribute("id", "switch");
         rect1.setAttribute("onclick", "activeObjectArbolNavidad.clicEnSwitch('switch')");
 
-        let rect2 = this.crearCuadrado(250, 600, 50, "brown");
+        let rect2 = this.crearCuadrado(250, 600, 50, this.colorActual);
+        rect2.setAttribute("id", "selector-color");
+        rect2.setAttribute("onclick", "activeObjectArbolNavidad.clicSelectorColor('selector-color')");
 
         this.svg.appendChild(arbol);
         this.svg.appendChild(rect1);
@@ -56,32 +62,42 @@ class ArbolNavidad {
     }
 
     clicEnArbol() {
-        this.ponerLuzAmarilla(event.clientX, event.clientY, this.calcularGrupo());
-        this.luzamarilla.push({x:event.clientX,y:event.clientY});
-        console.log(this.luzamarilla);
+        let posX = event.clientX;
+        let posY = event.clientY;
+        let circuitoActual = this.calcularCircuito();
+
+        this.ponerLuz(posX, posY, circuitoActual, this.colorActual);
+
+        this.luces.push({
+            x: posX,
+            y: posY,
+            color: this.colorActual,
+            circuito: circuitoActual
+        });
+        console.log(this.luces);
     }
 
-    calcularGrupo() {
-        // Usa el módulo para calcular el grupo al que pertenece esta luz
-        // De este modo, la luz va alternando entre grupo 0, 1, 2, 0, 1, 2, etc...
-        return this.luzamarilla.length % this.grupos.length;
+    calcularCircuito() {
+        // Usa el módulo para calcular el circuito al que pertenece esta luz
+        // De este modo, la luz va alternando entre circuito 1, 2, 3, 1, 2, 3, etc...
+        return (this.luces.length % this.circuitos.length) + 1;
     }
 
-    ponerLuzAmarilla(x, y, grupo) {
+    ponerLuz(x, y, circuito, color) {
         let luz = document.createElementNS(ns, "circle");
-        luz.setAttribute("r", "5");
-        luz.setAttribute("fill", "yellow");
+        luz.setAttribute("r", "10");
+        luz.setAttribute("fill", color);
         luz.setAttribute("cx", x);
         luz.setAttribute("cy", y);
 
-        let id = "luz" + this.luzamarilla.length;
+        let id = "luz" + this.luces.length;
         luz.setAttribute("id", id);
 
-        this.grupos[grupo].luces.push(id);
+        this.circuitos[circuito - 1].ids.push(id);
 
         // Si la animación está en ejecución, las luces agregadas vendrán con la animación
         if (this.activo) {
-            let milisecs = this.grupos[grupo].ms;
+            let milisecs = this.circuitos[circuito - 1].ms;
             luz.appendChild(this.crearAnimacion(milisecs));
         }
 
@@ -118,11 +134,11 @@ class ArbolNavidad {
 
     iniciarParpadeo() {
         // Inicia el parpadeo de todas las luces
-        for (let i = 0; i < this.grupos.length; i++) {
-            for (let idLuz of this.grupos[i].luces) {
+        for (let i = 1; i <= this.circuitos.length; i++) {
+            for (let idLuz of this.circuitos[i - 1].ids) {
 
                 let luz = document.getElementById(idLuz);
-                let milisecs = this.grupos[i].ms;
+                let milisecs = this.circuitos[i - 1].ms;
 
                 luz.appendChild(this.crearAnimacion(milisecs));
             }
@@ -131,11 +147,23 @@ class ArbolNavidad {
 
     finalizarParpadeo() {
         // Elimina las animaciones de todas las luces
-        for (let i = 0; i < this.grupos.length; i++) {
-            for (let idLuz of this.grupos[i].luces) {
+        for (let i = 1; i <= this.circuitos.length; i++) {
+            for (let idLuz of this.circuitos[i - 1].ids) {
                 let luz = document.getElementById(idLuz);
                 luz.innerHTML = "";
             }
         }
     }
+
+    clicSelectorColor(idSelector) {
+        if (this.colorActual === "yellow")
+            this.colorActual = "red"
+        else if (this.colorActual === "red")
+            this.colorActual = "blue"
+        else
+            this.colorActual = "yellow"
+        
+        document.getElementById(idSelector).setAttribute("fill", this.colorActual);
+    }
+
 }
