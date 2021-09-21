@@ -1,16 +1,15 @@
 <html>
 <head>
-    <title>Primer Ejemplo PHP</title>
+    <title>Ejemplo prog. avanz. php 01</title>
 </head>
 <body>
 <?php
-// aquí comienza PHP
 
-// Uso de variables
-$v1 = "HOLA ";
-$v2 = "MUNDO";
+for($i = 6; $i > 1; $i--) {
+    echo "\n<h$i>HOLA</h$i>";
+}
+
 ?>
 
-<h2><?=$v1.$v2?></h2>
 </body>
 </html>
