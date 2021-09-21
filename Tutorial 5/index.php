@@ -15,7 +15,8 @@ echo "<table border='1'>";
 for ($i = 0; $i < $n; $i++) {
     echo "\n<tr>";
     for ($j = 0; $j < $m; $j++) {
-        echo "\n  <td> ".$col[$i].$col2[$j]." </td>";
+        $c = $col[$i].$col2[$j];
+        echo "\n  <td bgcolor='$c'> ".$c." </td>";
     }
     echo "\n</tr>";
 }
