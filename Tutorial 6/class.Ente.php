@@ -32,5 +32,25 @@ class Ente {
         $ret = str_replace("&4", $this->color, $ret);
         return $ret;
     }
+
+    function mueve($minx, $miny, $maxx, $maxy) {
+        $nuevo_x = $this->x + $this->deltax;
+        $nuevo_y = $this->y + $this->deltay;
+        if ($nuevo_x > $minx && $nuevo_x < $maxx) {
+            $this->x = $nuevo_x;
+        }
+        else {
+            $this->deltax *= -1;
+            $this->x += $this->deltax;
+        }
+
+        if ($nuevo_y > $miny && $nuevo_y < $maxy) {
+            $this->y = $nuevo_y;
+        }
+        else {
+            $this->deltay *= -1;
+            $this->y += $this->deltay;
+        }
+    }
 }
 ?>

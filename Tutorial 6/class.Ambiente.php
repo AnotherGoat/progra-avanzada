@@ -36,5 +36,11 @@ class Ambiente {
         $ret .= "</svg>";
         return $ret;
     }
+
+    function mueve() {
+        foreach($this->entes as $ente) {
+            $ente->mueve(0, 0, $this->ancho, $this->alto);
+        }
+    }
 }
 ?>
