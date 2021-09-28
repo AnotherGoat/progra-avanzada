@@ -11,25 +11,24 @@ $alto = $_GET["alto"];
 $diametro = $_GET["diametro"];
 $contagiados = $_GET["contagiados"];
 $densidad = $_GET["densidad"];
+$ciclos = $_GET["ciclos"];
+$inmunidad = $_GET["inmunidad"];
 
 // Aunque no parece obvio, el uso de paréntesis en el siguiente cálculo no altera el resultado
 $maximo = intval($alto * $ancho / pow($diametro, 2) / 10 * $densidad / 100);
 $sanos = $maximo - $contagiados;
 
-echo "Ancho: ", $ancho, "<br>Alto: ", $alto, "<br>Diámetro: ", $diametro, "<br>Densidad: ", $densidad, "<br>Total: ", $maximo, "<br>Contagiados (inicio): ", $contagiados, "<br>Sanos (inicio): ", $sanos, "<br>";
-
-$ciclos = 500;
-echo "Ciclos: ", $ciclos, "<br>";
+echo "Ancho: ", $ancho, "<br>Alto: ", $alto, "<br>Diámetro: ", $diametro, "<br>Densidad: ", $densidad, "<br>Total: ", $maximo, "<br>Contagiados (inicio): ", $contagiados, "<br>Sanos (inicio): ", $sanos, "<br>Ciclos: ", $ciclos, "<br>Ciclos para inmunidad: ", $inmunidad, "<br>";
 
 if ($sanos < 0) {
     echo "<script>\nalert('Simulación infactible para los parámetros seleccionados')\n</script>";
 }
 
 else {
-    $amb = new Ambiente($ancho, $alto, $diametro / 2);
+    $amb = new Ambiente($ancho, $alto, $diametro / 2, $inmunidad);
     // Ahora no indica el color, sino que indica si está sano (verde) o no (rojo)
-    $amb->generaEntesAlAzar($sanos, true);
-    $amb->generaEntesAlAzar($contagiados, false);
+    $amb->generaEntesAlAzar($sanos, true, $inmunidad);
+    $amb->generaEntesAlAzar($contagiados, false, $inmunidad);
 
     $fin = 0;
 
@@ -70,7 +69,7 @@ else {
             document.getElementById("amb_" + nuevo).style.display = "";
 
             actual = nuevo;
-            setTimeout(muestraSiguiente, 30);
+            setTimeout(muestraSiguiente, 100);
         } catch(e) {
             if (e instanceof TypeError) {
                 console.log("FIN");

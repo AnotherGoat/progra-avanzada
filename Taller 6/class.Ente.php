@@ -7,14 +7,16 @@ class Ente {
     private $color;
     private $radio;
     private $sano; // Indica si está sano o contagiado
+    private $inmunidad; // Ciclos para llegar a inmunidad
 
-    function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y, $sano) {
+    function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y, $sano, $inmunidad) {
         $this->x = $pos_x;
         $this->y = $pos_y;
         $this->deltax = $velocidad_x;
         $this->deltay = $velocidad_y;
         $this->radio = 10;
         $this->sano = $sano;
+        $this->inmunidad = $inmunidad;
 
         if ($this->sano) {
             $this->color = "#33AA44"; // verde
@@ -29,6 +31,18 @@ class Ente {
 
     function fijaRadio($nuevoRadio) {
         $this->radio = $nuevoRadio;
+    }
+
+    function inmunizar() {
+        if (!$this->sano && $this->inmunidad > 0) {
+            $this->inmunidad--;
+        }
+
+        return $this->inmunidad == 0 && $this->color != "purple";
+    }
+
+    function sanar() {
+        $this->sano = true;
     }
 
     function svg() {
@@ -73,7 +87,7 @@ class Ente {
     }
 
     function contagia($otro) {
-        if ($this->chocaCon($otro) && !$this->sano && $otro->sano) {
+        if ($this->chocaCon($otro) && !$this->sano && $otro->sano && $otro->inmunidad != 0) {
             $otro->sano = false;
             $otro->color = "#AA3344";
             return true; // Hubo un nuevo contagio
