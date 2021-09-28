@@ -69,7 +69,7 @@ class Ente {
     }
 
     function chocaCon($otro) {
-        return $this->calcularDistancia($otro) <= $this->radio;
+        return $this->calcularDistancia($otro) < $this->radio * 2; // diámetro
     }
 
     function contagia($otro) {
