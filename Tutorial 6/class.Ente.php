@@ -6,14 +6,21 @@ class Ente {
     private $deltay;
     private $color;
     private $radio;
+    private $sano; // Indica si está sano o contagiado
 
-    function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y) {
+    function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y, $sano) {
         $this->x = $pos_x;
         $this->y = $pos_y;
         $this->deltax = $velocidad_x;
         $this->deltay = $velocidad_y;
-        $this->color = "#000000";
         $this->radio = 10;
+        $this->sano = $sano;
+
+        if ($this->sano) {
+            $this->color = "#33AA44"; // verde
+        } else {
+            $this->color = "#AA3344"; // rojo
+        }
     }
 
     function fijaColor($nuevoColor) {
@@ -50,6 +57,25 @@ class Ente {
         else {
             $this->deltay *= -1;
             $this->y += $this->deltay;
+        }
+    }
+
+    function calcularDistancia($otro) {
+        $dist_x = $this->x - $otro->x;
+        $dist_y = $this->y - $otro->y;
+
+        // Pitágoras
+        return sqrt(pow($dist_x, 2) + pow($dist_y, 2));
+    }
+
+    function chocaCon($otro) {
+        return $this->calcularDistancia($otro) <= $this->radio;
+    }
+
+    function contagia($otro) {
+        if ($this->chocaCon($otro) && !$this->sano && $otro->sano) {
+            $otro->sano = false;
+            $otro->color = "#AA3344";
         }
     }
 }

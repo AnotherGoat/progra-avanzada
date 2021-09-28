@@ -6,8 +6,9 @@
 include_once "class.Ambiente.php";
 
 $amb = new Ambiente(1000, 800);
-$amb->generaEntesAlAzar(50, "#33AA44");
-$amb->generaEntesAlAzar(1, "#AA3344");
+// Ahora no indica el color, sino que indica si está sano (verde) o no (rojo)
+$amb->generaEntesAlAzar(50, true);
+$amb->generaEntesAlAzar(1, false);
 
 for ($k = 0; $k < 100; $k++) {
     echo "\n";
