@@ -9,6 +9,7 @@ class Ente {
     private $sano; // Indica si está sano o contagiado
     private $inmunidad; // Ciclos para llegar a inmunidad
     private $sintomatico; // Indica si el contagio es sintomático
+    private $muerte; // Indica si el ente morirá
 
     function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y, $sano, $inmunidad) {
         $this->x = $pos_x;
@@ -27,6 +28,26 @@ class Ente {
 
         // Siempre iniciará como asintomatico
         $this->sintomatico = false;
+        $this->muerte = false;
+    }
+
+    function revisarMuerte() {
+        if ($this->muerte) {
+            if ($this->inmunidad == 0) {
+                return true;
+            }
+        
+            $this->inmunidad--;
+        }
+
+        return false;
+    }
+
+    function hacerMortal() {
+        $this->muerte = true;
+
+        // Reduce la inmunidad a la mitad, cuando llegue a 0 morirá
+        $this->inmunidad = intval($this->inmunidad / 2);
     }
 
     function hacerSintomatico() {

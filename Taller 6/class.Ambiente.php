@@ -7,21 +7,30 @@ class Ambiente {
     private $entes;
     private $radio;
     private $pref_sintomaticos; // Tasa de sintomáticos preferida
-
+    private $mortalidad_natural;
+    
     // Contadores
     private $sanos;
     private $contagiados;
     private $inmunes;
     private $sintomaticos;
+    private $falleceran; // Entes marcados como muertos
+    private $muertos;
 
-    function __construct($ancho_x, $alto_y, $radio, $sintomaticos) {
+    function __construct($ancho_x, $alto_y, $radio, $sintomaticos, $tasa_mortalidad) {
         $this->ancho = $ancho_x;
         $this->alto = $alto_y;
         $this->radio = $radio;
         $this->entes = [];
         $this->inmunes = 0;
         $this->sintomaticos = 0;
+        $this->muertos = 0;
         $this->pref_sintomaticos = $sintomaticos;
+        $this->mortalidad_natural = $tasa_mortalidad;
+    }
+
+    function getMuertos() {
+        return $this->muertos;
     }
 
     function getContagiados() {
@@ -56,6 +65,10 @@ class Ambiente {
         $ret .= "Inmunes: ".$this->inmunes."<br>";
         $ret .= "Sintomáticos: ".$this->sintomaticos."<br>";
         $ret .= "Tasa de sintomáticos: ".$this->tasaSintomaticos()."<br>";
+        $ret .= "Vivos: ".$this->vivos()."<br>";
+        $ret .= "Muertos: ".$this->muertos."<br>";
+        $ret .= "Marcados para fallecer: ".$this->falleceran."<br>";
+        $ret .= "Tasa de mortalidad: ".$this->tasaMortalidad()."<br>";
         return $ret;
     }
 
@@ -70,7 +83,19 @@ class Ambiente {
     }
 
     function tasaSintomaticos() {
-        return $this->sintomaticos / ($this->sanos + $this->contagiados + $this->inmunes);
+        return $this->sintomaticos / ($this->total());
+    }
+
+    function tasaMortalidad() {
+        return $this->falleceran / ($this->total());
+    }
+
+    function total() {
+        return $this->sanos + $this->contagiados + $this->inmunes + $this->muertos;
+    }
+
+    function vivos() {
+        return $this->sanos + $this->contagiados + $this->inmunes - $this->muertos;
     }
 
     function mueve() {
@@ -88,6 +113,12 @@ class Ambiente {
                     if ($this->tasaSintomaticos() < $this->pref_sintomaticos) {
                         $otro->hacerSintomatico();
                         $this->sintomaticos++;
+
+                        // Revisa si el siguiente deberá morir o no y lo marca
+                        if ($this->tasaMortalidad() < $this->mortalidad_natural) {
+                            $otro->hacerMortal();
+                            $this->falleceran++;
+                        }
                     }
 
                     // Aumenta los contadores después del paso anterior, lo cual es importante
@@ -96,9 +127,10 @@ class Ambiente {
                 }
             }
         }
+    }
 
-        // Empieza la inmunización después de hacer todos los movimientos
-        foreach($this->entes as $ente) {
+    function inmunizar() {
+        foreach ($this->entes as $ente) {
             $result = $ente->inmunizar();
 
             if ($result) {
@@ -110,6 +142,21 @@ class Ambiente {
                 $this->inmunes++;
 
                 // Esta vez se modificó el programa, no se cuenta a los inmunes como sanos también
+            }
+        }
+    }
+
+    function revisarMuertes() {
+        foreach ($this->entes as $ente) {
+            
+            $resultado = $ente->revisarMuerte();
+
+            if ($resultado) {
+                // Elimina al elemento
+                $indice = array_search($ente, $this->entes);
+                array_splice($this->entes, $indice, 1);
+                $this->contagiados--;
+                $this->muertos++;
             }
         }
     }

@@ -14,6 +14,7 @@ $densidad = $_GET["densidad"];
 $ciclos = $_GET["ciclos"];
 $inmunidad = $_GET["inmunidad"];
 $sintomaticos = $_GET["sintomaticos"];
+$mortalidad = $_GET["mortalidad"];
 
 // Aunque no parece obvio, el uso de paréntesis en el siguiente cálculo no altera el resultado
 $maximo = intval($alto * $ancho / pow($diametro, 2) / 10 * $densidad / 100);
@@ -31,13 +32,14 @@ echo "Sanos: ", $sanos, "<br>";
 echo "Ciclos: ", $ciclos, "<br>";
 echo "Ciclos para llegar a inmunidad: ", $inmunidad, "<br>";
 echo "Tasa de sintomáticos preferida: ", $sintomaticos / 100, "<br>";
+echo "Tasa de mortalidad natural: ", $mortalidad / 100, "<br>";
 
 if ($sanos < 0) {
     echo "<script>\nalert('Simulación infactible para los parámetros seleccionados')\n</script>";
 }
 
 else {
-    $amb = new Ambiente($ancho, $alto, $diametro / 2, $sintomaticos / 100);
+    $amb = new Ambiente($ancho, $alto, $diametro / 2, $sintomaticos / 100, $mortalidad / 100);
     // Ahora no indica el color, sino que indica si está sano (verde) o no (rojo)
     $amb->generaEntesAlAzar($sanos, true, $inmunidad);
     $amb->generaEntesAlAzar($contagiados, false, $inmunidad);
@@ -57,12 +59,14 @@ else {
         }
 
         $amb->mueve();
+        $amb->inmunizar();
+        $amb->revisarMuertes();
     }
 
     echo "<div id='resultado' style='visibility: hidden'>\n";
     echo str_replace("históricas", "finales", $amb->estadisticas($fin));
 
-    if ($amb->getContagiados() == $maximo) {
+    if ($amb->getContagiados() + $amb->getMuertos() == $maximo) {
         echo "<br>Finalizado: ", $fin;
     } else {
         echo "<br>Se llegó al máximo de ciclos (", $ciclos, ") sin contagiar a todos";
