@@ -4,3 +4,6 @@ mario,333333
 karla,1144da
 felipe,7248ed
 alberto,1522ff
+osvaldo,77ff88
+francisca,2222ee
+nicole,880000
