@@ -7,3 +7,5 @@ alberto,1522ff
 osvaldo,77ff88
 francisca,2222ee
 nicole,880000
+juan,882233
+gloria,22ff33
