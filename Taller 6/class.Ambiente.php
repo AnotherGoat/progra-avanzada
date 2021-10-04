@@ -6,18 +6,22 @@ class Ambiente {
     private $alto;
     private $entes;
     private $radio;
+    private $pref_sintomaticos; // Tasa de sintomáticos preferida
 
     // Contadores
     private $sanos;
     private $contagiados;
     private $inmunes;
+    private $sintomaticos;
 
-    function __construct($ancho_x, $alto_y, $radio) {
+    function __construct($ancho_x, $alto_y, $radio, $sintomaticos) {
         $this->ancho = $ancho_x;
         $this->alto = $alto_y;
         $this->radio = $radio;
         $this->entes = [];
-        $this-> inmunes = 0;
+        $this->inmunes = 0;
+        $this->sintomaticos = 0;
+        $this->pref_sintomaticos = $sintomaticos;
     }
 
     function getContagiados() {
@@ -44,17 +48,29 @@ class Ambiente {
         }
     }
 
+    function estadisticas($ciclo) {
+        $ret = "<h2>Estadísticas históricas</h2>";
+        $ret .= "Ciclo: ".$ciclo."<br>";
+        $ret .= "Sanos: ".$this->sanos."<br>";
+        $ret .= "Contagiados: ".$this->contagiados."<br>";
+        $ret .= "Inmunes: ".$this->inmunes."<br>";
+        $ret .= "Sintomáticos: ".$this->sintomaticos."<br>";
+        $ret .= "Tasa de sintomáticos: ".$this->tasaSintomaticos()."<br>";
+        return $ret;
+    }
+
     function vistaSVG($ciclo) {
-        $ret = "Ciclo (actual): ".$ciclo."<br>";
-        $ret .= "Sanos (actual): ".$this->sanos."<br>";
-        $ret .= "Contagiados (actual): ".$this->contagiados."<br>";
-        $ret .= "Inmunes (actual): ".$this->inmunes."<br>";
+        $ret = $this->estadisticas($ciclo);
         $ret .= "<svg width='".$this->ancho."' height='".$this->alto."'>"."\n";
         foreach($this->entes as $ente) {
             $ret .= $ente->svg()."\n";
         }
         $ret .= "</svg>";
         return $ret;
+    }
+
+    function tasaSintomaticos() {
+        return $this->sintomaticos / ($this->sanos + $this->contagiados + $this->inmunes);
     }
 
     function mueve() {
@@ -65,15 +81,23 @@ class Ambiente {
             foreach ($this->entes as $otro) {
                 $result = $ente->contagia($otro);
 
-                // Ajusta los contadores
+                // Si ocurrió un nuevo contagio
                 if ($result) {
+                    
+                    // Revisa si el siguiente contagio debe ser sintomático o no
+                    if ($this->tasaSintomaticos() < $this->pref_sintomaticos) {
+                        $otro->hacerSintomatico();
+                        $this->sintomaticos++;
+                    }
+
+                    // Aumenta los contadores después del paso anterior, lo cual es importante
                     $this->sanos--;
                     $this->contagiados++;
                 }
             }
         }
 
-        // Empieza la inmunización después de hacer todos los movientos
+        // Empieza la inmunización después de hacer todos los movimientos
         foreach($this->entes as $ente) {
             $result = $ente->inmunizar();
 
@@ -84,7 +108,8 @@ class Ambiente {
                 // Ajusta los contadores
                 $this->contagiados--;
                 $this->inmunes++;
-                $this->sanos++;
+
+                // Esta vez se modificó el programa, no se cuenta a los inmunes como sanos también
             }
         }
     }

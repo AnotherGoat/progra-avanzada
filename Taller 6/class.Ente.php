@@ -8,6 +8,7 @@ class Ente {
     private $radio;
     private $sano; // Indica si está sano o contagiado
     private $inmunidad; // Ciclos para llegar a inmunidad
+    private $sintomatico; // Indica si el contagio es sintomático
 
     function __construct($pos_x, $pos_y, $velocidad_x, $velocidad_y, $sano, $inmunidad) {
         $this->x = $pos_x;
@@ -23,6 +24,13 @@ class Ente {
         } else {
             $this->color = "#AA3344"; // rojo
         }
+
+        // Siempre iniciará como asintomatico
+        $this->sintomatico = false;
+    }
+
+    function hacerSintomatico() {
+        $this->sintomatico = true;
     }
 
     function fijaColor($nuevoColor) {
@@ -42,7 +50,9 @@ class Ente {
     }
 
     function sanar() {
+        // Cuando se sana (se vuelve completamente inmune), también se cura de los síntomas
         $this->sano = true;
+        $this->sintomatico = false;
     }
 
     function svg() {
@@ -55,22 +65,27 @@ class Ente {
     }
 
     function mueve($minx, $miny, $maxx, $maxy) {
-        $nuevo_x = $this->x + $this->deltax;
-        $nuevo_y = $this->y + $this->deltay;
-        if ($nuevo_x > $minx && $nuevo_x < $maxx) {
-            $this->x = $nuevo_x;
-        }
-        else {
-            $this->deltax *= -1;
-            $this->x += $this->deltax;
-        }
+        // Si es sintomático, no se mueve
+        if (!$this->sintomatico) {
 
-        if ($nuevo_y > $miny && $nuevo_y < $maxy) {
-            $this->y = $nuevo_y;
-        }
-        else {
-            $this->deltay *= -1;
-            $this->y += $this->deltay;
+            $nuevo_x = $this->x + $this->deltax;
+            $nuevo_y = $this->y + $this->deltay;
+            
+            if ($nuevo_x > $minx && $nuevo_x < $maxx) {
+                $this->x = $nuevo_x;
+            }
+            else {
+                $this->deltax *= -1;
+                $this->x += $this->deltax;
+            }
+
+            if ($nuevo_y > $miny && $nuevo_y < $maxy) {
+                $this->y = $nuevo_y;
+            }
+            else {
+                $this->deltay *= -1;
+                $this->y += $this->deltay;
+            }
         }
     }
 
