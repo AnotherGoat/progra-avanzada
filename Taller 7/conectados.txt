@@ -1,7 +1,6 @@
 victor,1522ff
 javiera,ffee35
 mario,333333
-karla,1144da
 felipe,7248ed
 alberto,1522ff
 osvaldo,77ff88

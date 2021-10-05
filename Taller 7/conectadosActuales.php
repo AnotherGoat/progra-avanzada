@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>Conectados actuales - Taller 7</title>
     <script>
+        
+        let timeout;
+
         // Base AJAX, Generalización de Carlos Cares
         function ejecutaExterno(id_doc_element, url_php, maximaEspera, sigueFunction) {
             //url_php = encodeURI(url_php);
@@ -32,6 +35,7 @@
         function actualizaConectados() {
             let contenido = document.getElementById("conectados").innerHTML;
             let llega = JSON.parse(contenido);
+
             if (llega.error != "") {
                 alert(llega.error);
             } else if (llega.ok == "yes") {
@@ -41,6 +45,7 @@
         }
 
         function muestraConectados(conectado) {
+        
             let tabla = document.createElement("table");
             let fila = document.createElement("tr");
             fila.id = "encabezado";
@@ -88,7 +93,7 @@
                 let boton = document.createElement("input");
                 boton.type = "button";
                 boton.value = "X";
-                boton.setAttribute("onclick", "indicarFila(" + (k + 1) + ")");
+                boton.setAttribute("onclick", "desconectar(" + (k + 1) + ",'" + conectado[k].nombre + "')");
                 celda.appendChild(boton);
                 fila.appendChild(celda);
 
@@ -104,18 +109,29 @@
             let url = "conectados.php?accion=todos&hora=" + (new Date()).getTime();
 
             // Aquí se muestra la nueva invocación del método
-            console.log("Nueva invocación: " + url)
+            console.log("Actualización: " + url)
 
             ejecutaExterno("conectados", url, 2000, actualizaConectados);
-            setTimeout(actualizaConectadosRecurrentemente, tiempo, tiempo);
+            this.timeout = setTimeout(actualizaConectadosRecurrentemente, tiempo, tiempo);
         }
 
         function botonNuevo() {
             alert("Se ha presionado el botón Nuevo");
         }
 
-        function indicarFila(fila) {
-            alert("Se hizo click en la fila " + fila);
+        function desconectar(fila, nombre) {
+            console.log("Se hizo click en la fila " + fila);
+
+            // Realiza la desconexión
+            let url = "conectados.php?accion=desconecta&nombre=" + nombre;
+            ejecutaExterno("conectados", url, 2000, indicaDesconexion);
+            
+            clearTimeout(this.timeout);
+            this.timeout = actualizaConectadosRecurrentemente(5000);
+        }
+
+        function indicaDesconexion() {
+            console.log("Se desconectó un usuario");
         }
     </script>
     <style>
