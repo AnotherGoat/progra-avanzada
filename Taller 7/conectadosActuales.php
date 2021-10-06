@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Conectados actuales - Taller 7</title>
     <script>
-        
+
         let timeout;
 
         // Base AJAX, Generalización de Carlos Cares
@@ -67,7 +67,7 @@
             let boton = document.createElement("input");
             boton.type = "button";
             boton.value = "Nuevo";
-            boton.setAttribute("onclick", "botonNuevo()");
+            boton.setAttribute("onclick", "hacerVisible('agreganuevo')");
             celda.appendChild(boton);
             fila.appendChild(celda);
 
@@ -133,6 +133,40 @@
         function indicaDesconexion() {
             console.log("Se desconectó un usuario");
         }
+
+        function hacerVisible(div) {
+            document.getElementById(div).removeAttribute("style");
+        }
+
+        function hacerInvisible(div) {
+            document.getElementById(div).style.display = "none";
+        }
+
+        function agregarNuevo() {
+            let nombre = document.getElementById("nombre").value;
+            let color = document.getElementById("color").value;
+
+            if (nombre !== "" && color !== "") {
+                // Realiza la agregación
+                let url = "conectados.php?accion=agrega&nombre=" + nombre + "&color=" + color;
+                ejecutaExterno("conectados", url, 2000, indicaAgregacion);
+
+                // Reinicia los campos de texto
+                nombre.value = "";
+                color.value = "";
+                hacerInvisible("agreganuevo");
+
+                // Actualiza los resultados
+                clearTimeout(this.timeout);
+                this.timeout = actualizaConectadosRecurrentemente(5000);
+            } else {
+                alert("No puede dejar campos vacíos");
+            }
+        }
+
+        function indicaAgregacion() {
+            console.log("Se conectó un usuario");
+        }
     </script>
     <style>
         table, th, td {
@@ -143,6 +177,13 @@
 </head>
 
 <body>
+    <div id="agreganuevo" style="display:none">
+        <h3>Agregar nuevo</h3>
+        Nombre: <input type="text" id="nombre"><br>
+        Color: <input type="text" id="color"><br>
+        <input type="button" value="Agregar" onclick="agregarNuevo()">
+        <input type="button" value="Cancelar" onclick="hacerInvisible('agreganuevo')">
+    </div>
     <h3>Conectados</h3>
     <div id="conectados" style="display:none"></div>
     <div id="salidavisible"></div>
