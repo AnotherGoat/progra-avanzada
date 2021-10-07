@@ -29,55 +29,55 @@
 
             muestra() {
                 // Áreas que dividen el SVG
-                let area1 = this.crearMarco(this.ancho, this.ancho, 0, 0)
+                var area1 = this.crearMarco(this.ancho, this.ancho, 0, 0)
                 this.svg.appendChild(area1);
 
-                let area2 = this.crearMarco(this.ancho * 0.5, this.ancho, this.ancho, 0)
+                var area2 = this.crearMarco(this.ancho * 0.5, this.ancho, this.ancho, 0)
                 this.svg.appendChild(area2);
 
                 // Ejes
-                for (let i = 0; i < this.svg.extremos.length; i++) {
-                    let eje = this.crearLinea(this.svg.centro.x, this.svg.centro.y,
+                for (var i = 0; i < this.svg.extremos.length; i++) {
+                    var eje = this.crearLinea(this.svg.centro.x, this.svg.centro.y,
                                               this.svg.extremos[i].x, this.svg.extremos[i].y);
                     this.svg.appendChild(eje);
                 }
 
                 // Centro del gráfico
-                let centro = this.crearCirculo(3, this.ancho/2, this.ancho/2, "gray");
+                var centro = this.crearCirculo(3, this.ancho/2, this.ancho/2, "gray");
                 this.svg.appendChild(centro);
 
                 // Extremos
-                for (let i = 0; i < this.svg.extremos.length; i++) {
-                    let extremo = this.crearCirculo(6, this.svg.extremos[i].x, this.svg.extremos[i].y, this.cartesian.colores[i])
+                for (var i = 0; i < this.svg.extremos.length; i++) {
+                    var extremo = this.crearCirculo(6, this.svg.extremos[i].x, this.svg.extremos[i].y, this.cartesian.colores[i])
                     this.svg.appendChild(extremo);
                 }
 
                 // Puntos (para que queden encima de los extremos)
-                for (let i = 0; i < this.svg.puntos.length; i++) {
-                    let punto = this.crearCirculo(3, this.svg.puntos[i].x, this.svg.puntos[i].y, "black")
+                for (var i = 0; i < this.svg.puntos.length; i++) {
+                    var punto = this.crearCirculo(3, this.svg.puntos[i].x, this.svg.puntos[i].y, "black")
                     this.svg.appendChild(punto);
                 }
 
                 // Líneas transversales
-                for (let i = 0; i < this.svg.puntos.length; i++) {
+                for (var i = 0; i < this.svg.puntos.length; i++) {
                     // Se usa módulo para que una el último con el primero al final
-                    let siguiente = (i + 1) % this.svg.puntos.length;
+                    var siguiente = (i + 1) % this.svg.puntos.length;
 
-                    let linea = this.crearLinea(this.svg.puntos[i].x, this.svg.puntos[i].y,
+                    var linea = this.crearLinea(this.svg.puntos[i].x, this.svg.puntos[i].y,
                                                 this.svg.puntos[siguiente].x, this.svg.puntos[siguiente].y);
                     this.svg.appendChild(linea);
                 }
 
                 // Valores del gráfico
-                for (let i = 0; i < this.cartesian.datos.length; i++) {
-                    let porcentaje = "" + (this.cartesian.datos[i] / this.cartesian.maximo * 100) + "%";
-                    let texto = this.crearTexto(this.svg.puntos[i].x - 15, this.svg.puntos[i].y - 15, porcentaje);
+                for (var i = 0; i < this.cartesian.datos.length; i++) {
+                    var porcentaje = "" + (this.cartesian.datos[i] / this.cartesian.maximo * 100) + "%";
+                    var texto = this.crearTexto(this.svg.puntos[i].x - 15, this.svg.puntos[i].y - 15, porcentaje);
                     this.svg.appendChild(texto);
                 }
             }
 
             crearLinea(inicioX, inicioY, finalX, finalY) {
-                let linea = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                var linea = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 linea.setAttribute("x1", inicioX);
                 linea.setAttribute("y1", inicioY);
                 linea.setAttribute("x2", finalX);
@@ -87,7 +87,7 @@
             }
 
             crearMarco(ancho, alto, x, y) {
-                let marco = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                var marco = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                 marco.setAttribute("width", ancho);
                 marco.setAttribute("height", alto);
                 marco.setAttribute("x", x);
@@ -97,7 +97,7 @@
             }
 
             crearCirculo(radio, cx, cy, color) {
-                let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                var circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 circulo.setAttribute("r", radio);
                 circulo.setAttribute("cx", cx);
                 circulo.setAttribute("cy", cy);
@@ -106,27 +106,27 @@
             }
 
             calculaPosicionCirculos() {
-                let cantidad = this.cartesian.datos.length;
-                let divisiones = this.dividirCirculo(cantidad);
+                var cantidad = this.cartesian.datos.length;
+                var divisiones = this.dividirCirculo(cantidad);
 
-                for (let i = 0; i < cantidad; i++) {
+                for (var i = 0; i < cantidad; i++) {
                     // Convierte de polar a cartesiana a SVG
-                    let polar = {r: this.cartesian.datos[i],
+                    var polar = {r: this.cartesian.datos[i],
                                  theta: divisiones[i]};
-                    let cartesian = this.a_cartesiana(polar);
-                    let svg = this.a_svg(cartesian);
+                    var cartesian = this.a_cartesiana(polar);
+                    var svg = this.a_svg(cartesian);
 
                     // Añade el punto al SVG
                     this.svg.puntos.push(svg);
                 }
 
                 // También añade los extremos
-                for (let i = 0; i < cantidad; i++) {
+                for (var i = 0; i < cantidad; i++) {
                     // Convierte de polar a cartesiana a SVG
-                    let polar = {r: this.cartesian.maximo,
+                    var polar = {r: this.cartesian.maximo,
                                  theta: divisiones[i]};
-                    let cartesian = this.a_cartesiana(polar);
-                    let svg = this.a_svg(cartesian);
+                    var cartesian = this.a_cartesiana(polar);
+                    var svg = this.a_svg(cartesian);
 
                     // Añade el extremo al SVG
                     this.svg.extremos.push(svg);
@@ -134,9 +134,9 @@
             }
 
             dividirCirculo(partes) {
-                let grados = [];
+                var grados = [];
 
-                for (let i = 0; i < partes; i++) {
+                for (var i = 0; i < partes; i++) {
                     // Si i = 0 añade 45, empieza desde 45
                     grados.push(45 + (i / partes) * 360);
                 }
@@ -160,14 +160,14 @@
             }
 
             inyectaEtiquetas() {
-                let posicion = 20;
+                var posicion = 20;
 
                 // Añade las etiquetas
-                for (let i = 0; i < this.svg.extremos.length; i++) {
-                    let circulo = this.crearCirculo(6, this.ancho + 20, posicion, this.cartesian.colores[i]);
+                for (var i = 0; i < this.svg.extremos.length; i++) {
+                    var circulo = this.crearCirculo(6, this.ancho + 20, posicion, this.cartesian.colores[i]);
                     this.svg.appendChild(circulo);
 
-                    let etiqueta = this.crearTexto(this.ancho + 35, posicion + 5, this.cartesian.etiquetas[i]);
+                    var etiqueta = this.crearTexto(this.ancho + 35, posicion + 5, this.cartesian.etiquetas[i]);
                     this.svg.appendChild(etiqueta);
 
                     posicion += 30;
@@ -175,7 +175,7 @@
             }
 
             crearTexto(x, y, contenido) {
-                let texto = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                var texto = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 texto.innerHTML = contenido;
                 texto.setAttribute("x", x);
                 texto.setAttribute("y", y);
@@ -185,22 +185,22 @@
         }
 
         function datosParaArana(tx) {
-            let obj = document.getElementById(tx);
+            var obj = document.getElementById(tx);
             // Se reemplaza innerHTML por value para que el valor se actualice
             str = obj.value.replace(/(\r\n|\n|\r|\s)/gm, "");
             
-            let texto = str.split(";");
+            var texto = str.split(";");
             texto.splice(-1, 1); // borra último elemento vacío
             
-            let obj = {tipo:"araña"};
-            let linea = 0;
+            var obj = {tipo:"araña"};
+            var linea = 0;
 
             for (lin of texto) {
                 console.log("linea " + linea + ": " + lin);
 
-                let sep = lin.split("=");
+                var sep = lin.split("=");
                 if (sep.length == 2) {
-                    let ele = sep[1].split(",");
+                    var ele = sep[1].split(",");
                     obj[sep[0]] = ele;
                 }
                 else {
@@ -211,7 +211,7 @@
 
             console.log(JSON.stringify(obj));
 
-            let graf = new AranaSVG(obj);
+            var graf = new AranaSVG(obj);
             console.log(JSON.stringify(graf.cartesian));
             graf.muestra();
             graf.inyectaEtiquetas();
@@ -222,7 +222,7 @@
         }
 
         function inyectarSVG(div, svg) {
-            let grafico = document.getElementById(div);
+            var grafico = document.getElementById(div);
             grafico.innerHTML="";
             grafico.appendChild(svg);
         }

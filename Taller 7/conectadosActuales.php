@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">    
     <title>Conectados actuales - Taller 7</title>
     <script>
 
@@ -152,8 +152,24 @@
                 ejecutaExterno("conectados", url, 2000, indicaAgregacion);
 
                 // Reinicia los campos de texto
-                nombre.value = "";
-                color.value = "";
+                let divNombre = document.getElementById("div-nombre");
+                divNombre.innerHTML = "";
+                
+                let inputNombre = document.createElement("input")
+                inputNombre.type = "text";
+                inputNombre.id = "nombre";
+                inputNombre.value = "";
+                divNombre.appendChild(inputNombre);
+
+                let divColor = document.getElementById("div-color");
+                divColor.innerHTML = "";
+                
+                let inputColor = document.createElement("input")
+                inputColor.type = "text";
+                inputColor.id = "color";
+                inputColor.value = "";
+                divColor.appendChild(inputColor);
+                
                 hacerInvisible("agreganuevo");
 
                 // Actualiza los resultados
@@ -179,8 +195,8 @@
 <body>
     <div id="agreganuevo" style="display:none">
         <h3>Agregar nuevo</h3>
-        Nombre: <input type="text" id="nombre"><br>
-        Color: <input type="text" id="color"><br>
+        Nombre: <div id="div-nombre"><input type="text" id="nombre" value=""></div><br>
+        Color: <div id="div-color"><input type="text" id="color" value=""></div><br>
         <input type="button" value="Agregar" onclick="agregarNuevo()">
         <input type="button" value="Cancelar" onclick="hacerInvisible('agreganuevo')">
     </div>
