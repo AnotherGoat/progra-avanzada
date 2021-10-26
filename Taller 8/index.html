@@ -14,7 +14,7 @@
     <div id="x3dSection">
         <x3d width="400" height="300">
             <scene>
-                <Viewpoint position="150 -50 700"></Viewpoint>
+                <Viewpoint position="150 -50 1000"></Viewpoint>
                 <group def="escritorio-oscuro">
                     <!-- Tapa superior -->
                     <transform translation = "0 76 0" scale="121 1 44">
@@ -211,6 +211,37 @@
                         </appearance>
                         <box solid="true" size="1000 0.2 1000"></box>
                     </shape>
+                </transform>
+
+                <!-- Paredes sin ventanas -->
+                <transform translation="150 163 400" scale="500 240 8">
+                    <!-- Cubo de 1cm x 1cm x 1cm -->
+                    <shape def="cubo">
+                        <appearance>
+                            <material diffuseColor="#cd9575"></material>
+                        </appearance>
+                        <box height="0.1"></box>
+                    </shape>
+                </transform>
+                <transform translation="150 163 -600" scale="500 240 8">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="-348 163 -100" scale="8 240 508">
+                    <shape use="cubo"></shape>
+                </transform>
+                
+                <!-- Pared con ventana -->
+                <transform translation="650 163 -458" scale="8 240 150">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="650 163 200" scale="8 240 208">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="650 28 -157" scale="8 105 155">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="650 363 -157" scale="8 40 155">
+                    <shape use="cubo"></shape>
                 </transform>
             </scene>
         </x3d>
