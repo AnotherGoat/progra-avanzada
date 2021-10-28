@@ -14,97 +14,210 @@
     <div id="escritorio">
         <x3d width="400" height="300">
             <scene>
-                <Viewpoint position="0 0 25"></Viewpoint>
+                <Viewpoint position="10 0 50"></Viewpoint>
 
-                <!-- Tapa superior -->
-                <transform translation = "0 7.6 0" scale="122 1 44">
-                    <!-- Cubo unitario de 1cm x 1cm x 1cm -->
-                    <shape def="cubo">
+                <group def="escritorio-oscuro">
+                    <!-- Tapa superior -->
+                    <transform translation = "0 7.6 0" scale="122 1 44">
+                        <!-- Cubo unitario de 1cm x 1cm x 1cm -->
+                        <shape def="cubo">
+                            <appearance>
+                                <material diffuseColor="#6b4423"></material>
+                            </appearance>
+                            <box size="0.1 0.1 0.1"></box>
+                        </shape>
+                    </transform>
+                    <transform translation = "0 7.4 0" scale="121 4 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- 3 pilares -->
+                    <transform translation="6 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation="-6 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation="2 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    
+                    <!-- Tapa trasera -->
+                    <transform translation = "0 6.1 -2" scale="120 30 1">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- Cajones -->
+                    <transform translation = "4 6.45 0.45" scale="40 15 37">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation = "4 4.9 0.45" scale="40 15 37">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation = "4 0.5 0" scale="40 1 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- Tiradores (centro) -->
+                    <transform translation = "4 6.55 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
+                        <shape def="cilindro">
+                            <!-- Cilindro que ocupa el mismo espacio que un cubo unitario -->
+                            <appearance>
+                                <material diffuseColor="#fcffa4"></material>
+                            </appearance>
+                            <!-- Altura 1cm y diámetro 1 cm -->
+                            <cylinder height="0.1" radius="0.05"></cylinder>
+                        </shape>
+                    </transform>
+                    <transform translation = "4 5.1 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    
+                    <!-- Tiradores (extremos) -->
+                    <transform translation = "3.2 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "4.8 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "3.2 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "4.8 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    
+                    <!-- Clavos / Tornillos -->
+                    <transform translation = "1.5 6.8 -1.95" scale="2 2 1">
+                        <!-- Esfera que ocupa el mismo espacio que un cubo unitario -->
+                        <shape def="esfera">
+                            <appearance>
+                                <material diffuseColor="#a9a9a9"></material>
+                            </appearance>
+                            <!-- Si el radio es 0.5cm, el diámetro es 1cm -->
+                            <sphere radius="0.05"></sphere>
+                        </shape>
+                    </transform>
+                    <transform translation = "1.5 5 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                    <transform translation = "-5.5 6.8 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                    <transform translation = "-5.5 5 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                </group>
+
+                <group def="escritorio-claro">
+                    <!-- Tapa superior -->
+                    <transform translation = "20 7.6 0" scale="122 1 44">
+                        <!-- Cubo unitario de 1cm x 1cm x 1cm -->
+                        <shape def="cubo">
+                            <appearance>
+                                <material diffuseColor="#cd853f"></material>
+                            </appearance>
+                            <box size="0.1 0.1 0.1"></box>
+                        </shape>
+                    </transform>
+                    <transform translation = "20 7.4 0" scale="121 4 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- 3 pilares -->
+                    <transform translation="26 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation="14 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation="22 3.8 0" scale="1 76 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    
+                    <!-- Tapa trasera -->
+                    <transform translation = "20 6.1 -2" scale="120 30 1">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- Cajones -->
+                    <transform translation = "24 6.45 0.45" scale="40 15 37">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation = "24 4.9 0.45" scale="40 15 37">
+                        <shape use="cubo"></shape>
+                    </transform>
+                    <transform translation = "24 0.5 0" scale="40 1 43">
+                        <shape use="cubo"></shape>
+                    </transform>
+    
+                    <!-- Tiradores (centro) -->
+                    <transform translation = "24 6.55 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
+                        <shape def="cilindro">
+                            <!-- Cilindro que ocupa el mismo espacio que un cubo unitario -->
+                            <appearance>
+                                <material diffuseColor="#fcffa4"></material>
+                            </appearance>
+                            <!-- Altura 1cm y diámetro 1 cm -->
+                            <cylinder height="0.1" radius="0.05"></cylinder>
+                        </shape>
+                    </transform>
+                    <transform translation = "24 5.1 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    
+                    <!-- Tiradores (extremos) -->
+                    <transform translation = "23.2 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "24.8 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "23.2 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    <transform translation = "24.8 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
+                        <shape use="cilindro"></shape>
+                    </transform>
+                    
+                    <!-- Clavos / Tornillos -->
+                    <transform translation = "21.5 6.8 -1.95" scale="2 2 1">
+                        <!-- Esfera que ocupa el mismo espacio que un cubo unitario -->
+                        <shape def="esfera">
+                            <appearance>
+                                <material diffuseColor="#a9a9a9"></material>
+                            </appearance>
+                            <!-- Si el radio es 0.5cm, el diámetro es 1cm -->
+                            <sphere radius="0.05"></sphere>
+                        </shape>
+                    </transform>
+                    <transform translation = "21.5 5 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                    <transform translation = "14.5 6.8 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                    <transform translation = "14.5 5 -1.95" scale="2 2 1">
+                        <shape use="esfera"></shape>
+                    </transform>
+                </group>
+
+                <transform translation="20 0 -20">
+                    <shape use="escritorio-oscuro"></shape>
+                </transform>
+
+                <transform translation="-20 0 -20">
+                    <shape use="escritorio-claro"></shape>
+                </transform>
+
+                <!-- Piso -->
+                <transform translation="10 -0.1 -10">
+                    <shape>
                         <appearance>
-                            <material diffuseColor="#6b4423"></material>
+                            <ImageTexture url="https://s3.wasabisys.com/dreamhomesbyrob/2017/11/pacific-koa-wood-flooringhardwood-flooring-flooring-company-lauzon-montreal.jpg"/>
                         </appearance>
-                        <box size="0.1 0.1 0.1"></box>
+                        <box solid="true" size="60 0.2 60"></box>
                     </shape>
-                </transform>
-                <transform translation = "0 7.4 0" scale="121 4 43">
-                    <shape use="cubo"></shape>
-                </transform>
-
-                <!-- 3 pilares -->
-                <transform translation="6 3.8 0" scale="1 76 43">
-                    <shape use="cubo"></shape>
-                </transform>
-                <transform translation="-6 3.8 0" scale="1 76 43">
-                    <shape use="cubo"></shape>
-                </transform>
-                <transform translation="2 3.8 0" scale="1 76 43">
-                    <shape use="cubo"></shape>
-                </transform>
-                
-                <!-- Tapa trasera -->
-                <transform translation = "0 6.1 -2" scale="120 30 1">
-                    <shape use="cubo"></shape>
-                </transform>
-
-                <!-- Cajones -->
-                <transform translation = "4 6.45 0.45" scale="40 15 37">
-                    <shape use="cubo"></shape>
-                </transform>
-                <transform translation = "4 4.9 0.45" scale="40 15 37">
-                    <shape use="cubo"></shape>
-                </transform>
-                <transform translation = "4 0.5 0" scale="40 1 43">
-                    <shape use="cubo"></shape>
-                </transform>
-
-                <!-- Tiradores (centro) -->
-                <transform translation = "4 6.55 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
-                    <shape def="cilindro">
-                        <!-- Cilindro que ocupa el mismo espacio que un cubo unitario -->
-                        <appearance>
-                            <material diffuseColor="#fcffa4"></material>
-                        </appearance>
-                        <!-- Altura 1cm y diámetro 1 cm -->
-                        <cylinder height="0.1" radius="0.05"></cylinder>
-                    </shape>
-                </transform>
-                <transform translation = "4 5.1 2.45" rotation="0 1 1 3.14159" scale="20 1 1">
-                    <shape use="cilindro"></shape>
-                </transform>
-                
-                <!-- Tiradores (extremos) -->
-                <transform translation = "3.2 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
-                    <shape use="cilindro"></shape>
-                </transform>
-                <transform translation = "4.8 6.55 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
-                    <shape use="cilindro"></shape>
-                </transform>
-                <transform translation = "3.2 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
-                    <shape use="cilindro"></shape>
-                </transform>
-                <transform translation = "4.8 5.1 2.3" rotation="0 1 1 3.14159" scale="0.5 4 0.5">
-                    <shape use="cilindro"></shape>
-                </transform>
-                
-                <!-- Clavos / Tornillos -->
-                <transform translation = "1.5 6.8 -1.95" scale="2 2 1">
-                    <!-- Esfera que ocupa el mismo espacio que un cubo unitario -->
-                    <shape def="esfera">
-                        <appearance>
-                            <material diffuseColor="#a9a9a9"></material>
-                        </appearance>
-                        <!-- Si el radio es 0.5cm, el diámetro es 1cm -->
-                        <sphere radius="0.05"></sphere>
-                    </shape>
-                </transform>
-                <transform translation = "1.5 5 -1.95" scale="2 2 1">
-                    <shape use="esfera"></shape>
-                </transform>
-                <transform translation = "-5.5 6.8 -1.95" scale="2 2 1">
-                    <shape use="esfera"></shape>
-                </transform>
-                <transform translation = "-5.5 5 -1.95" scale="2 2 1">
-                    <shape use="esfera"></shape>
                 </transform>
             </scene>
         </x3d>
