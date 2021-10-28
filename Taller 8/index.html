@@ -14,7 +14,7 @@
     <div id="escritorio">
         <x3d width="400" height="300">
             <scene>
-                <Viewpoint position="10 0 50"></Viewpoint>
+                <Viewpoint position="10 0 100"></Viewpoint>
 
                 <group def="escritorio-oscuro">
                     <!-- Tapa superior -->
@@ -216,8 +216,40 @@
                         <appearance>
                             <ImageTexture url="https://s3.wasabisys.com/dreamhomesbyrob/2017/11/pacific-koa-wood-flooringhardwood-flooring-flooring-company-lauzon-montreal.jpg"/>
                         </appearance>
+                        <!-- Piso de 6m x 6m -->
                         <box solid="true" size="60 0.2 60"></box>
                     </shape>
+                </transform>
+
+                <!-- Paredes sin ventanas -->
+                <transform translation="10 12 20" scale="600 240 8">
+                    <!-- Cubo de 1cm x 1cm x 1cm -->
+                    <shape def="cubo">
+                        <appearance>
+                            <material diffuseColor="#cd9575"></material>
+                        </appearance>
+                        <box size="0.1 0.1 0.1"></box>
+                    </shape>
+                </transform>
+                <transform translation="10 12 -40" scale="600 240 8">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="-20 12 -10" scale="8 240 608">
+                    <shape use="cubo"></shape>
+                </transform>
+                
+                <!-- Pared con ventana -->
+                <transform translation="40 12 -32" scale="8 240 168">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="40 12 6.9" scale="8 240 270">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="40 5.25 -15" scale="8 105 172">
+                    <shape use="cubo"></shape>
+                </transform>
+                <transform translation="40 22 -15" scale="8 40 172">
+                    <shape use="cubo"></shape>
                 </transform>
             </scene>
         </x3d>
