@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Taller 9 - Víctor Mardones</title>
+    <link rel="stylesheet" type="text/css" href="x3dom/x3dom.css">
+    </link>
+    <script type="text/javascript" src="x3dom/x3dom.js">
+    </script>
+    <script>
+        const coloresR = ["#ffa07a", "#ff7f50", "#ff6347", "#ff4500", "#ff8c00", "#ffa500"];
+        const coloresG = ["#32cd32", "#98fb98", "#90ee90", "#00fa9a", "#00ff7f", "#3cb371"];
+        const coloresB = ["#40e0d0", "#48d1cc", "#00ced1", "#5f9ea0", "#4682b4", "#b0c4de"];
+
+        // Alto base para los paralelepípedos
+        const alto = 1.5;
+
+        function inyectarPaneles(idDiv) {
+            let div = document.getElementById(idDiv);
+
+            let x3d = document.createElement("x3d");
+            x3d.setAttribute("width", 400);
+            x3d.setAttribute("height", 300);
+
+            let escena = document.createElement("scene");
+
+            // Crea los paneles rojos
+            let posicionActual = {x: -alto, y: alto * 2.5, z: 0};
+
+            for (let color of coloresR) {
+                let panel = crearPanel(posicionActual, color);
+
+                escena.appendChild(panel);
+                posicionActual.y -= alto;
+            }
+
+            // Crea los paneles verdes
+            posicionActual = {x: 0, y: alto * 2.5, z: 0};
+
+            for (let color of coloresG) {
+                let panel = crearPanel(posicionActual, color);
+
+                escena.appendChild(panel);
+                posicionActual.y -= alto;
+            }
+
+            // Crea los paneles azules
+            posicionActual = {x: alto, y: alto * 2.5, z: 0};
+
+            for (let color of coloresB) {
+                let panel = crearPanel(posicionActual, color);
+
+                escena.appendChild(panel);
+                posicionActual.y -= alto;
+            }
+
+            x3d.appendChild(escena);
+            div.appendChild(x3d);
+        }
+
+        function crearPanel(posicion, color) {
+            let tran = document.createElement("transform");
+            tran.setAttribute("id", "pieza_" + color);
+
+            let grupo = document.createElement("group");
+
+            let tranInterna = document.createElement("transform");
+            tranInterna.setAttribute("translation", `${posicion.x} ${posicion.y} ${posicion.z}`);
+
+            let forma = document.createElement("shape");
+            forma.setAttribute("def", "panel");
+            
+            // Apariencia del panel
+            let appearance = document.createElement("appearance");
+            let material = document.createElement("material");
+
+            material.setAttribute("id", "color_panel");
+            material.setAttribute("diffuseColor", color);
+            appearance.appendChild(material);
+            forma.appendChild(appearance);
+
+            // Figura base
+            let caja = document.createElement("box");
+            caja.setAttribute("size", `${alto} ${alto} ${alto * 1/3}`);
+            forma.appendChild(caja);
+
+            tranInterna.appendChild(forma);
+            grupo.appendChild(tranInterna);
+            tran.appendChild(grupo);
+
+            return tran;
+        }
+    </script>
+</head>
+<body>
+    <div id="x3dSection">
+    </div>
+    <script>
+        this.inyectarPaneles("x3dSection");
+    </script>
+</body>
