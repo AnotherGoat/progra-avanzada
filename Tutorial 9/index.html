@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="x3dom/x3dom.css">
+    </link>
+    <script type="text/javascript" src="x3dom/x3dom.js">
+    </script>
+
+    <script>
+        let color_guardado = "";
+        let color_marcado = "0.9 0.9 0.9";
+        let obj_seleccionado = "";
+
+        function mueveSel(obj) {
+            if(obj_seleccionado != "") {
+                let tran = obj.getAttribute("translation");
+                let coor = tran.split(" ");
+                tran = coor[0] + " " + (parseFloat(coor[1]) + 0.4) + " " + coor[2];
+                obj_seleccionado.setAttribute("translation", tran);
+                desel(obj_seleccionado);
+            }
+        }
+
+        function desel(obj) {
+            let nid = "" + obj.id + "_" + "color";
+            let otr = document.getElementById(nid);
+            obj_seleccionado = "";
+            otr.diffuseColor = color_guardado;
+            color_guardado = "";
+        }
+
+        function marca(obj) {
+            let nid = "" + obj.id + "_" + "color";
+            let otr = document.getElementById(nid);
+            if (color_guardado == "") {
+                color_guardado = otr.diffuseColor;
+                otr.diffuseColor = color_marcado;
+                obj_seleccionado = obj;
+            }
+            else {
+                obj_seleccionado = "";
+                otr.diffuseColor = color_guardado;
+                color_guardado = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="x3dSection">
+        <x3d width="400" height="300">
+            <scene id="pie">
+
+                <transform id="pieza" translation="0 2 1" onclick="marca(this)">
+                    <group>
+                        <transform translation="0 1 0" scale=".3 .3 .3">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="pieza_color" diffuseColor="1.0 0.5 0.5"></material>
+                                </appearance>
+                                <sphere></sphere>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas1" translation="-1 0 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas2" translation="1 0 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas3" translation="-1 -1.2 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas4" translation="1 -1.2 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+            </scene>
+        </x3d>
+    </div>
+</body>
+</html>
