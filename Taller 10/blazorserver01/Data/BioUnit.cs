@@ -5,10 +5,12 @@ namespace blazorserver01.Data
         protected string color;
         public int posx;
         public int posy;
-        public BioUnit(int x, int y) {
+        public Environment parent;
+        public BioUnit(int x, int y, Environment e) {
             this.posx = x;
             this.posy = y;
             this.color = "#444444";
+            this.parent = e;
         }
         public string myColor() => this.color;
     }

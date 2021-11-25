@@ -8,23 +8,34 @@
 @{
     // only the first time (initial pattern)
     if (currentCount == 0) {
-        u = new Data.Rabbit(3, 3);
+        u = new Data.Rabbit(3, 3,e );
         e.insert(3, 3, u);
-        u = new Data.Rabbit(3, 4);
+        u = new Data.Rabbit(3, 4, e);
         e.insert(3, 4, u);
-        u = new Data.Rabbit(3, 5);
+        u = new Data.Rabbit(3, 5, e);
         e.insert(3, 5, u);
-        u = new Data.Rabbit(2, 5);
+        u = new Data.Rabbit(2, 5, e);
         e.insert(2, 5, u);
-        u = new Data.Rabbit(1, 4);
+        u = new Data.Rabbit(1, 4, e);
         e.insert(1, 4, u);
 
-        u = new Data.Carrot(11, 14);
+        u = new Data.Carrot(11, 14, e);
         e.insert(11, 14, u);
-        u = new Data.Carrot(12, 15);
+        u = new Data.Carrot(12, 15, e);
         e.insert(12, 15, u);
-        u = new Data.Carrot(13, 14);
+        u = new Data.Carrot(13, 14, e);
         e.insert(13, 14, u);
+        u = new Data.Carrot(0, 0, e);
+        e.insert(0, 0, u);
+
+        // Líneas cambiadas
+        int count1 = e.neighbors(1, 1).Count();
+        int count2 = e.neighbors(1, 5).Count();
+        int count3 = e.neighbors(2, 3).Count();
+        Console.WriteLine("Neighbors");
+        Console.WriteLine(count1);
+        Console.WriteLine(count2);
+        Console.WriteLine(count3);
     }
 }
 
