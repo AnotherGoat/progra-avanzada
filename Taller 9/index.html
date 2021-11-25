@@ -21,17 +21,19 @@
         // Usado para interacción
         let obj_seleccionado = "";
 
-        function inyectarPaneles(idDiv) {
-            let div = document.getElementById(idDiv);
+        // Usado por la esfera y los paralelepipedos
+        let color_guardado = "";
+        let color_marcado = "0.9 0.9 0.9";
+        let box_seleccionado = "";
+        let is_esfera_marcada = false;
 
-            let x3d = document.createElement("x3d");
-            x3d.setAttribute("width", 400);
-            x3d.setAttribute("height", 300);
+        function inyectarPaneles(idEscena) {
+            let escena = document.getElementById(idEscena);
 
-            let escena = document.createElement("scene");
+            console.log(escena);
 
             // Crea los paneles rojos
-            let posicionActual = {x: -alto, y: alto * 2.5, z: 0};
+            let posicionActual = {x: -alto, y: alto * 2.5, z: -3};
 
             for (let color of coloresR) {
                 let panel = crearPanel(posicionActual, color);
@@ -41,7 +43,7 @@
             }
 
             // Crea los paneles verdes
-            posicionActual = {x: 0, y: alto * 2.5, z: 0};
+            posicionActual = {x: 0, y: alto * 2.5, z: -3};
 
             for (let color of coloresG) {
                 let panel = crearPanel(posicionActual, color);
@@ -51,7 +53,7 @@
             }
 
             // Crea los paneles azules
-            posicionActual = {x: alto, y: alto * 2.5, z: 0};
+            posicionActual = {x: alto, y: alto * 2.5, z: -3};
 
             for (let color of coloresB) {
                 let panel = crearPanel(posicionActual, color);
@@ -59,9 +61,6 @@
                 escena.appendChild(panel);
                 posicionActual.y -= alto;
             }
-
-            x3d.appendChild(escena);
-            div.appendChild(x3d);
         }
 
         function crearPanel(posicion, color) {
@@ -100,15 +99,13 @@
         }
 
         function marcar(obj) {
-            let id = obj.id;
-
             // Caso 1: ningún objeto seleccionado
             if (obj_seleccionado == "") {
                 seleccionar(obj);
             }
             
             // Caso 2: se hizo click sobre el objeto seleccionado
-            else if (obj_seleccionado == id) {
+            else if (obj_seleccionado == obj.id) {
                 reiniciar(obj);
             }
 
@@ -122,15 +119,21 @@
         }
 
         function seleccionar(obj) {
-            let id = obj.id;
-            alert(`ID del objeto: ${id}`);
-            obj_seleccionado = id;
+            obj_seleccionado = obj.id;
+            color_guardado = obj_seleccionado.replace("pieza_", "");
+            console.log(color_guardado);
 
+            // Cambia el color de la esfera
+            if (!is_esfera_marcada) {
+                let material = document.getElementById("pieza_color");
+                material.diffuseColor = color_guardado;
+            }
+
+            // Realiza la traslación
             let tran = obj.getAttribute("translation");
-
             let coor = tran.split(" ");
 
-            tran = `${coor[0]} ${coor[1]} ${parseFloat(-alto * 1/4)}`;
+            tran = `${coor[0]} ${coor[1]} ${parseFloat(coor[2] - alto * 1/4)}`;
 
             obj.setAttribute("translation", tran);
         }
@@ -141,16 +144,130 @@
             let tran = obj.getAttribute("translation");
 
             let coor = tran.split(" ");
-            tran = `${coor[0]} ${coor[1]} 0`;
+            tran = `${coor[0]} ${coor[1]} -3`;
 
             obj.setAttribute("translation", tran);
+        }
+
+        // Tutorial 9
+
+        function mueveSel(obj) {
+            // Solo mueve si la esfera estaba marcada
+            if(is_esfera_marcada) {
+                let tran = obj.getAttribute("translation");
+                let coor = tran.split(" ");
+                tran = coor[0] + " " + (parseFloat(coor[1]) + 0.4) + " " + coor[2];
+                box_seleccionado.setAttribute("translation", tran);
+                desel(box_seleccionado);
+            }
+        }
+
+        function desel(obj) {
+            let nid = "" + obj.id + "_" + "color";
+            let otr = document.getElementById(nid);
+            box_seleccionado = "";
+            otr.diffuseColor = color_guardado;
+            color_guardado = "";
+            is_esfera_marcada = false;
+        }
+
+        function marca(obj) {
+            let nid = "" + obj.id + "_" + "color";
+            let otr = document.getElementById(nid);
+
+            console.log(otr.diffuseColor)
+
+            // Esfera seleccionada, se desmarca
+            if (is_esfera_marcada) {
+                box_seleccionado = "";
+                otr.diffuseColor = color_guardado;
+                is_esfera_marcada = false;
+            }
+
+            // Se marca la esfera
+            else {
+                color_guardado = otr.diffuseColor;
+                otr.diffuseColor = color_marcado;
+                box_seleccionado = obj;
+                is_esfera_marcada = true;                
+            }
         }
     </script>
 </head>
 <body>
     <div id="x3dSection">
+        <x3d id="x3d" width="400" height="300">
+
+            <scene id="paneles">
+                <!-- Estructura del tutorial 9 -->
+                <transform id="pieza" translation="0 2 1" onclick="marca(this)">
+                    <group>
+                        <transform translation="0 1 0" scale=".3 .3 .3">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="pieza_color" diffuseColor="1.0 0.5 0.5"></material>
+                                </appearance>
+                                <sphere></sphere>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas1" translation="-1 0 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas2" translation="1 0 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas3" translation="-1 -1.2 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+
+                <transform id="cas4" translation="1 -1.2 0" onclick="mueveSel(this)">
+                    <group>
+                        <transform translation="0 1 0" scale="0.5 0.2 0.5">
+                            <shape def="fase">
+                                <appearance>
+                                    <material id="caja_color" diffuseColor="0.8 0.5 1.0"></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </transform>
+                    </group>
+                </transform>
+            </scene>
+        </x3d>
     </div>
     <script>
-        this.inyectarPaneles("x3dSection");
+        this.inyectarPaneles("paneles");
     </script>
 </body>
