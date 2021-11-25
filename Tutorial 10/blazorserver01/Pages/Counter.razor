@@ -5,8 +5,14 @@
 <hr>
 
 @{
-    e.live(2, 3);
-    e.live(4, 5);
+    // only the first time (initial pattern)
+    if (currentCount == 0) {
+        e.live(3, 3);
+        e.live(3, 4);
+        e.live(3, 5);
+        e.live(2, 5);
+        e.live(1, 4);
+    }
 }
 
 <table class="environment">
@@ -32,6 +38,6 @@
     private void IncrementCount()
     {
         currentCount++;
-        e.live(currentCount, currentCount);
+        e.nextConwayStep();
     }
 }
