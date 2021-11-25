@@ -1,0 +1,54 @@
+﻿@page "/rabbits_and_carrots"
+@using System
+
+<h1>Rabbits and Carrots</h1>
+<p>Current count: @currentCount</p>
+<hr>
+
+@{
+    // only the first time (initial pattern)
+    if (currentCount == 0) {
+        // Beehive
+        e.live(3, 3);
+        e.live(3, 4);
+        e.live(4, 2);
+        e.live(4, 5);
+        e.live(5, 3);
+        e.live(5, 4);
+
+        // Toad
+        e.live(9, 9);
+        e.live(9, 10);
+        e.live(9, 11);
+        e.live(10, 8);
+        e.live(10, 9);
+        e.live(10, 10);
+    }
+}
+
+<table class="environment">
+    @for (var i = 0; i < @e.total_of_rows(); i++) {
+        <tr>
+            @for (var j = 0; j < @e.total_of_cols(); j++) {
+                @if (e.is_alive(i, j)) {
+                    <td class="cell alive"></td>
+                }
+                else {
+                    <td class="cell dead"></td>
+                }
+            }
+        </tr>
+    }
+</table>
+<hr>
+<button class="btn btn-primary" @onclick="IncrementCount">Next</button>
+
+@code {
+    private int currentCount = 0;
+    private Data.Environment e = new Data.Environment(15, 15);
+    private void IncrementCount()
+    {
+        currentCount++;
+        e.nextConwayStep();
+    }
+}

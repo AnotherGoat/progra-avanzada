@@ -98,3 +98,5 @@
 /mnt/Archivos/Proyectos/HTML CSS JS/programacion-avanzada/Taller 10/blazorserver01/obj/Debug/netcoreapp3.1/blazorserver01.csproj.CopyComplete
 /mnt/Archivos/Proyectos/HTML CSS JS/programacion-avanzada/Taller 10/blazorserver01/obj/Debug/netcoreapp3.1/RazorDeclaration/Pages/GameOfLife.razor.g.cs
 /mnt/Archivos/Proyectos/HTML CSS JS/programacion-avanzada/Taller 10/blazorserver01/obj/Debug/netcoreapp3.1/Razor/Pages/GameOfLife.razor.g.cs
+/mnt/Archivos/Proyectos/HTML CSS JS/programacion-avanzada/Taller 10/blazorserver01/obj/Debug/netcoreapp3.1/RazorDeclaration/Pages/RabbitsAndCarrots.razor.g.cs
+/mnt/Archivos/Proyectos/HTML CSS JS/programacion-avanzada/Taller 10/blazorserver01/obj/Debug/netcoreapp3.1/Razor/Pages/RabbitsAndCarrots.razor.g.cs
