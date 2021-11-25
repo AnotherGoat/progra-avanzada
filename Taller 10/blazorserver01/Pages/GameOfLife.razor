@@ -8,23 +8,28 @@
     // only the first time (initial pattern)
     if (currentCount == 0) {
         // Beehive
+        /*
         e.live(3, 3);
         e.live(3, 4);
         e.live(4, 2);
         e.live(4, 5);
         e.live(5, 3);
         e.live(5, 4);
+        */
 
         // Toad
+        /*
         e.live(9, 9);
         e.live(9, 10);
         e.live(9, 11);
         e.live(10, 8);
         e.live(10, 9);
         e.live(10, 10);
+        */
     }
 }
 
+<!--
 <table class="environment">
     @for (var i = 0; i < @e.total_of_rows(); i++) {
         <tr>
@@ -39,6 +44,7 @@
         </tr>
     }
 </table>
+-->
 <hr>
 <button class="btn btn-primary" @onclick="IncrementCount">Next</button>
 
@@ -48,6 +54,6 @@
     private void IncrementCount()
     {
         currentCount++;
-        e.nextConwayStep();
+        //e.nextConwayStep();
     }
 }
