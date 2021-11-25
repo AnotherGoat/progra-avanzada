@@ -33,7 +33,7 @@
         <tr>
             @for (var j = 0; j < @e.total_of_cols(); j++) {
                 @if (e.biounit(i, j) != null) {
-                    <td class="cell alive"></td>
+                    <td class="cell" style="background-color:@e.biounit(i, j).myColor()"></td>
                 }
                 else {
                     <td class="cell dead"></td>
