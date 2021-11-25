@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 namespace blazorserver01.Data
 {
     public class Environment
@@ -51,6 +53,73 @@ namespace blazorserver01.Data
                 if (this.rightPos(i+1, j+1) && this.cell[i+1, j+1] != null) ans.Add(this.cell[i+1, j+1]);
             }
             return ans;
+        }
+
+        public int surroundingNeighbors(int i, int j, String species) {
+            int ans = 0;
+            List<BioUnit> surr = this.neighbors(i, j);
+            Console.WriteLine(" i  j  " + i.ToString() + " , " + j.ToString());
+            foreach (object unit in surr) {
+                if (this.specie(unit) == species) ans++;
+            }
+            return ans;
+        }
+
+        public String specie(Object obj) {
+            String[] w;
+            if (obj == null) return "";
+            w = TypeDescriptor.GetClassName(obj).Split(".");
+            return w[w.Length - 1];
+        }
+
+        public Rabbit firstRabbit(int i, int j) {
+            List<BioUnit> neis = this.neighbors(i, j);
+            foreach (object unit in neis) {
+                if (this.specie(unit) == "Rabbit")
+                    return (Rabbit) unit;
+            }
+            return null;
+        }
+
+        public void next_Rabbit_Carrot_Step() {
+            BioUnit[,] aux = new BioUnit[this.rows, this.cols];
+            for (var i = 0; i < this.rows; i++)
+            for (var j = 0; j < this.cols; j++) {
+                aux[i, j] = null; // rule 2, rule 5
+
+                // rule 1
+                if (this.specie(this.cell[i, j]) == "Carrot") {
+                    if (this.surroundingNeighbors(i, j, "Rabbit") == 0) {
+                        if (this.cell[i, j].will_I_live())
+                            aux[i, j] = this.cell[i, j];
+                    }
+                    else { // rule 3
+                        this.firstRabbit(i, j).eat();
+                    }
+                }
+
+                // rule 4
+                else if (this.specie(this.cell[i, j]) == "Rabbit") {
+                    if (this.cell[i, j].will_I_live()) {
+                        aux[i, j] = this.cell[i, j];
+                    }
+                }
+
+                // rule 6
+                else {
+                    if (this.cell[i, j] == null) {
+                        if (this.surroundingNeighbors(i, j, "Rabbit") >= 2)
+                            aux[i, j] = new Rabbit(i, j, this);
+                        else if (this.surroundingNeighbors(i, j, "Carrot") >= 3)
+                            aux[i, j] = new Carrot(i, j, this);
+                    }
+                }
+            }
+
+            for (var i = 0; i < this.rows; i++)
+            for (var j = 0; j < this.cols; j++) {
+                this.cell[i, j] = aux[i, j];
+            }
         }
     }
 }

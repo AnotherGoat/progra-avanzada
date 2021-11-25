@@ -8,7 +8,7 @@
 @{
     // only the first time (initial pattern)
     if (currentCount == 0) {
-        u = new Data.Rabbit(3, 3,e );
+        u = new Data.Rabbit(3, 3, e);
         e.insert(3, 3, u);
         u = new Data.Rabbit(3, 4, e);
         e.insert(3, 4, u);
@@ -63,5 +63,6 @@
     private void IncrementCount()
     {
         currentCount++;
+        e.next_Rabbit_Carrot_Step();
     }
 }
