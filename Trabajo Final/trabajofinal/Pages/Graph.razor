@@ -1,0 +1,57 @@
+﻿@page "/evidence-graph"
+
+<h1>Evidence graph</h1>
+
+<p>Input: @input</p>
+
+<!--<button class="btn btn-primary" @onclick="IncrementCount">Render</button>-->
+
+<svg width="800px" height="800px">
+    <!-- Horizontal lines -->
+    @foreach (var y in e.GetXPositions())
+    {
+        <line x1="@e.GetMinX()" y1="@y"
+              x2="@e.GetMaxX()" y2="@y"
+              style="stroke:gray;stroke-width:0.75" stroke-dasharray="5, 5"></line>
+    }
+
+    <!-- Vertical lines -->
+    @foreach (var x in e.GetXPositions())
+    {
+        <line x1="@x" y1="@e.GetMinY()"
+              x2="@x" y2="@e.GetMaxY()"
+              style="stroke:gray;stroke-width:0.75" stroke-dasharray="5, 5"></line>
+    }
+
+    @foreach (var evidence in e.Evidences)
+    {
+        <text>
+            <!-- Y axis labels -->
+            <text x="0" y="@evidence.YPos" fill="black" dy=".3em" >@evidence.YLabel</text>
+
+            <!-- X axis labels -->
+            <text x="@evidence.XPos" y="@e.GetYLimit()" fill="black"
+                  text-anchor="middle" dy=".3em" >@evidence.XLabel</text>
+
+            @if (evidence.Value != 0) {
+                <!-- Círculo que representa cada evidencia -->
+                <circle cx="@evidence.XPos" cy="@evidence.YPos" r="@evidence.GetRadius()"
+                        fill="@evidence.Color" fill-opacity="0.4"
+                        stroke="black" stroke-width="0.75" />
+
+                <!-- Valor numérico de cada evidencia -->
+                <text>
+                    <text x="@evidence.XPos" y="@evidence.YPos" fill="black"
+                          text-anchor="middle" dy=".3em" >@evidence.Value</text>
+                </text>
+            }
+        </text>
+    }
+</svg>
+
+@code {
+    // Data obtained from the textarea
+    private static string input = "{(\"X\",\"D\",20), (\"X\",\"C\",0), (\"X\",\"B\",0),(\"X\",\"A\",13), (\"Y\",\"D\",7), (\"Y\",\"B\",6), (\"Z\",\"A\",2), (\"Z\",\"D\",13), (\"W\",\"C\",15), (\"W\",\"D\",7)}";
+
+    private Data.EvidenceGraph e = new Data.EvidenceGraph(input);
+}
