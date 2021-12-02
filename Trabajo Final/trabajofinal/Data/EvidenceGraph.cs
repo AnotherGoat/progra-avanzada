@@ -10,13 +10,16 @@ namespace trabajofinal.Data
         // Separation between each element
         public int Separation { get; set; }
 
-        private static List<string> Colors = new List<string>{"yellow", "green", "red", "blue", "magenta", "cyan", "black", "brown", "orange", "violet", "gray"};
+        private static List<string> Colors = new List<string>();
 
-        public EvidenceGraph(string input)
+        public EvidenceGraph(string input, string colors)
         {
             // Cleans input data and parses it to a list
             input = SimplifyInput(input);
             var evidences = ParseEvidences(input);
+
+            // Initializes the list of colors based on input
+            Colors = ParseColors(colors);
 
             // Calculates the position of each evidence using the separation (based on max radius)
             Separation = evidences.Select(e => e.Value).Max() * 3 + 10;
@@ -47,6 +50,11 @@ namespace trabajofinal.Data
             }
 
             return evidences;
+        }
+
+        // Parses colors from text area input
+        private List<string> ParseColors(string input) {
+            return new List<string>(input.Replace(" ", "").Replace("\"", "").Split(","));
         }
 
         // Calculates X and Y postition of each evidence

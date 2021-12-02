@@ -2,11 +2,25 @@
 
 <h1>Evidence graph</h1>
 
-<p>Input: @input</p>
+Please note, any input must:
+<li>Use the same format as the example given by default</li>
+<li>Not contain the characters " { } ( ) , ; inside string literals</li>
+<li>Any whitespace will be ignored</li>
+<li>The colors repeat in the same sequence</li>
+<li>You can also specify the SVG area size below, in case of rendering issues</li><hr>
 
-<!--<button class="btn btn-primary" @onclick="IncrementCount">Render</button>-->
+<label>SVG size (width, height)</label><br>
+<textarea cols="70" rows="1" @bind="size"></textarea><br>
 
-<svg width="800px" height="800px">
+<label>Input data</label><br>
+<textarea cols="70" rows="2" @bind="input"></textarea><br>
+
+<label>Input colors</label><br>
+<textarea cols="70" rows="1" @bind="colors"></textarea><br>
+
+<button class="btn btn-primary" @onclick="Render">Generate</button>
+
+<svg width='@size.Replace(" ","").Split(",")[0]' height='@size.Replace(" ","").Split(",")[1]'>
     <!-- Horizontal lines -->
     @foreach (var y in e.GetXPositions())
     {
@@ -36,7 +50,7 @@
             @if (evidence.Value != 0) {
                 <!-- Círculo que representa cada evidencia -->
                 <circle cx="@evidence.XPos" cy="@evidence.YPos" r="@evidence.GetRadius()"
-                        fill="@evidence.Color" fill-opacity="0.4"
+                        fill="@evidence.Color" fill-opacity="0.2"
                         stroke="black" stroke-width="0.75" />
 
                 <!-- Valor numérico de cada evidencia -->
@@ -52,6 +66,12 @@
 @code {
     // Data obtained from the textarea
     private static string input = "{(\"X\",\"D\",20), (\"X\",\"C\",0), (\"X\",\"B\",0),(\"X\",\"A\",13), (\"Y\",\"D\",7), (\"Y\",\"B\",6), (\"Z\",\"A\",2), (\"Z\",\"D\",13), (\"W\",\"C\",15), (\"W\",\"D\",7)}";
+    private static string colors = "\"yellow\", \"green\", \"red\", \"blue\", \"magenta\", \"cyan\", \"black\", \"brown\", \"orange\", \"violet\", \"gray\"";
+    private static string size = "800px, 800px";
+    private Data.EvidenceGraph e = new Data.EvidenceGraph(input, colors);
 
-    private Data.EvidenceGraph e = new Data.EvidenceGraph(input);
+    private void Render()
+    {
+        e = new Data.EvidenceGraph(input, colors);
+    }
 }
