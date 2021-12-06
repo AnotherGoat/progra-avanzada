@@ -13,13 +13,15 @@ Please note, any input must:
 <textarea cols="70" rows="1" @bind="size"></textarea><br>
 
 <label>Input data</label><br>
-<textarea cols="70" rows="2" @bind="input"></textarea><br>
+<textarea cols="70" rows="3" @bind="input"></textarea><br>
 
 <label>Input colors</label><br>
 <textarea cols="70" rows="1" @bind="colors"></textarea><br>
 
-<button class="btn btn-primary" @onclick="Render">Generate</button>
+<button class="btn btn-primary" @onclick="Render">Generate</button><br>
 
+@if (e != null)
+{
 <svg width='@size.Replace(" ","").Split(",")[0]' height='@size.Replace(" ","").Split(",")[1]'>
     <!-- Horizontal lines -->
     @foreach (var y in e.GetXPositions())
@@ -37,38 +39,48 @@ Please note, any input must:
               style="stroke:gray;stroke-width:0.75" stroke-dasharray="5, 5"></line>
     }
 
-    @foreach (var evidence in e.Evidences)
+    @foreach (var y in e.YLabels)
     {
         <text>
-            <!-- Y axis labels -->
-            <text x="0" y="@evidence.YPos" fill="black" dy=".3em" >@evidence.YLabel</text>
-
-            <!-- X axis labels -->
-            <text x="@evidence.XPos" y="@e.GetYLimit()" fill="black"
-                  text-anchor="middle" dy=".3em" >@evidence.XLabel</text>
-
-            @if (evidence.Value != 0) {
-                <!-- Círculo que representa cada evidencia -->
-                <circle cx="@evidence.XPos" cy="@evidence.YPos" r="@evidence.GetRadius()"
-                        fill="@evidence.Color" fill-opacity="0.2"
-                        stroke="black" stroke-width="0.75" />
-
-                <!-- Valor numérico de cada evidencia -->
-                <text>
-                    <text x="@evidence.XPos" y="@evidence.YPos" fill="black"
-                          text-anchor="middle" dy=".3em" >@evidence.Value</text>
-                </text>
-            }
+            <text x="@y.XPos" y="@y.YPos" fill="black" dy=".3em"
+                  font-family="monospace" font-size="@y.FontSize"
+                  text-anchor="middle">@y.Text</text>
         </text>
     }
+
+    @foreach (var x in e.XLabels)
+    {
+        <text>
+            <text x="@x.XPos" y="@x.YPos" fill="black" dy=".3em"
+                  font-family="monospace" font-size="@x.FontSize"
+                  text-anchor="middle">@x.Text</text>
+        </text>
+    }
+
+    @foreach (var evidence in e.Evidences)
+    {
+        @if (evidence.Value != 0) {
+            <!-- Círculo que representa cada evidencia -->
+            <circle cx="@evidence.XPos" cy="@evidence.YPos" r="@evidence.GetRadius()"
+                    fill="@evidence.Color" fill-opacity="0.2"
+                    stroke="black" stroke-width="0.75" />
+
+            <!-- Valor numérico de cada evidencia -->
+            <text>
+                <text x="@evidence.XPos" y="@evidence.YPos" fill="black"
+                      text-anchor="middle" dy=".3em" >@evidence.Value</text>
+            </text>
+        }
+    }
 </svg>
+}
 
 @code {
     // Data obtained from the textarea
-    private static string input = "{(\"X\",\"D\",20), (\"X\",\"C\",0), (\"X\",\"B\",0),(\"X\",\"A\",13), (\"Y\",\"D\",7), (\"Y\",\"B\",6), (\"Z\",\"A\",2), (\"Z\",\"D\",13), (\"W\",\"C\",15), (\"W\",\"D\",7)}";
+    private static string input = "{(\"Etiqueta_1\",\"D\",20), (\"X\",\"C\",0), (\"X\",\"Ciudad\",10),(\"X\",\"A\",13), (\"Otra_etiqueta\",\"D\",7), (\"Y\",\"Etiqueta_2\",6), (\"Z\",\"A\",2), (\"Z\",\"País\",13), (\"W\",\"C\",15), (\"W\",\"D\",7)}";
     private static string colors = "\"yellow\", \"green\", \"red\", \"blue\", \"magenta\", \"cyan\", \"black\", \"brown\", \"orange\", \"violet\", \"gray\"";
     private static string size = "800px, 800px";
-    private Data.EvidenceGraph e = new Data.EvidenceGraph(input, colors);
+    private Data.EvidenceGraph e;
 
     private void Render()
     {

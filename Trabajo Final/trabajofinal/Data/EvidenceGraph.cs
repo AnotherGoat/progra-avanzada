@@ -9,8 +9,9 @@ namespace trabajofinal.Data
         public List<Evidence> Evidences { get; set; } = new List<Evidence>();
         // Separation between each element
         public int Separation { get; set; }
-
-        private static List<string> Colors = new List<string>();
+        private List<string> Colors = new List<string>();
+        public List<Label> XLabels = new List<Label>();
+        public List<Label> YLabels = new List<Label>();
 
         public EvidenceGraph(string input, string colors)
         {
@@ -66,26 +67,32 @@ namespace trabajofinal.Data
             var yValues = evidences.Select(e => e.YLabel).Distinct().Reverse().ToList();
 
             foreach (var evidence in evidences) {
-                evidence.XPos = Separation * (1 + xValues.IndexOf(evidence.XLabel));
-                evidence.YPos = Separation * (1 + yValues.IndexOf(evidence.YLabel));
+                evidence.XPos = Separation * (2 + xValues.IndexOf(evidence.XLabel));
+                evidence.YPos = Separation * (2 + yValues.IndexOf(evidence.YLabel));
 
                 // Color also depends on X label
                 var colorIndex = xValues.IndexOf(evidence.XLabel) % Colors.Count;
                 evidence.Color = Colors[colorIndex];
             }
 
+            // Y Axis labels
+            for (var i = 0; i < yValues.Count(); i++) {
+                YLabels.Add(new Label(yValues[i], Separation,
+                        Separation * (i + 2), 18 - 50 * yValues[i].Length / Separation));
+            }
+
+            // X Axis labels
+            for (var i = 0; i < xValues.Count(); i++) {
+                XLabels.Add(new Label(xValues[i], Separation * (i + 2),
+                        evidences.Max(e => e.YPos) + Separation, 18 - 50 * xValues[i].Length / Separation));
+            }
+
             return evidences;
-        }
-
-        // Used for the X axis labels
-        public int GetYLimit() {
-            return Evidences.Max(e => e.YPos) + Separation;
-
         }
 
         // The next 6 methods are used to draw the background lines
         public int GetMinX() {
-            return Separation / 2;
+            return Separation + Separation / 2;
         }
 
         public int GetMaxX() {
@@ -93,7 +100,7 @@ namespace trabajofinal.Data
         }
 
         public int GetMinY() {
-            return Separation / 2;
+            return Separation + Separation / 2;
         }
 
         public int GetMaxY() {
